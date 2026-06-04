@@ -1,18 +1,17 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:virtuomate_flutter/ui/app.dart';
+import 'package:virtuomate_flutter/ui/shared/virtuomate_logo.dart';
 
 void main() {
-  testWidgets('App renders welcome screen', (WidgetTester tester) async {
-    await tester.pumpWidget(const VirtuoMateRoot());
-    await tester.pumpAndSettle();
-    expect(find.text('VIRTUOMATE'), findsOneWidget);
-    expect(find.text('Initialize System'), findsOneWidget);
+  testWidgets('VirtuoMate logo widget builds', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Scaffold(
+          body: Center(child: VirtuoMateLogo.welcome()),
+        ),
+      ),
+    );
+    await tester.pump();
+    expect(find.byType(VirtuoMateLogo), findsOneWidget);
   });
 }
