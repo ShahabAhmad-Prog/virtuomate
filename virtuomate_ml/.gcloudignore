@@ -1,0 +1,14 @@
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+# Root training data only — do NOT exclude ml/datasets or ml/models (Python packages)
+/datasets/
+/models/checkpoints/*
+!/models/checkpoints/best/
+.git/
+tests/
+*.md
+!ARCHITECTURE.md
+requirements.txt

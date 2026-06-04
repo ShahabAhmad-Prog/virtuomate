@@ -1,0 +1,24 @@
+# Cloud Run — includes locally trained DeBERTa checkpoint (run train-full.ps1 first)
+FROM python:3.11-slim
+
+WORKDIR /app
+
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONPATH=/app
+ENV PORT=8080
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements-neural.txt .
+RUN pip install --no-cache-dir -r requirements-neural.txt
+
+COPY ml ./ml
+COPY models/checkpoints/best ./models/checkpoints/best
+
+RUN python -c "from pathlib import Path; assert Path('models/checkpoints/best/config.json').exists(); from ml.api.main import app; print('checkpoint_build_ok')"
+
+EXPOSE 8080
+
+CMD ["python", "-m", "uvicorn", "ml.api.main:app", "--host", "0.0.0.0", "--port", "8080"]

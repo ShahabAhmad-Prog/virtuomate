@@ -1,0 +1,4 @@
+-r requirements-cloud.txt
+torch>=2.1.0,<3
+transformers>=4.38.0,<5
+safetensors>=0.4.0,<1

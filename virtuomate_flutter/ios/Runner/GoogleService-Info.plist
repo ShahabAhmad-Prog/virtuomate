@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>671835013493-51l32nbs1bqah3ms96dbklskvu220k77.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.671835013493-51l32nbs1bqah3ms96dbklskvu220k77</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>671835013493-op5pv14ol9afsasu6u5kb6qq3mg5ege9.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyALTM_mZ-UtDcNcdpRHnhhvcV-MYN-KflQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>671835013493</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.virtuomateFlutter</string>
+	<key>PROJECT_ID</key>
+	<string>virtuomate</string>
+	<key>STORAGE_BUCKET</key>
+	<string>virtuomate.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:671835013493:ios:fafa7966712942880b133c</string>
+</dict>
+</plist>

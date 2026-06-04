@@ -1,0 +1,12 @@
+.git
+.firebase
+firebase-debug.log
+firebase-debug.*.log
+node_modules
+.env
+.env.*
+*.md
+Dockerfile
+docker-compose.yml
+.github
+tmp-gemini-image-probe.png

@@ -1,0 +1,53 @@
+# Secrets — never commit
+.env
+.env.*
+!.env.example
+**/serviceAccount*.json
+**/google-services.json.bak
+*.pem
+*.p12
+
+# Dependencies & build outputs
+**/node_modules/
+**/.dart_tool/
+**/.pub-cache/
+**/build/
+**/.firebase/
+firebase-debug.log
+firebase-debug.*.log
+
+# Flutter / mobile
+**/.flutter-plugins-dependencies
+**/ios/Pods/
+**/ios/.symlinks/
+**/android/.gradle/
+**/android/local.properties
+**/*.apk
+**/*.aab
+**/*.ipa
+
+# ML / large artifacts (download via scripts)
+**/assets/models/*.tflite
+virtuomate_ml/data/
+virtuomate_ml/runs/
+**/__pycache__/
+**/.venv/
+**/*.pt
+**/*.pth
+**/*.onnx
+
+# IDE & OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Temp / probes
+tmp-*
+*.log
+**/agent-tools/
+
+# Optional huge folders (uncomment if you want a slimmer repo)
+# virtuomate-mvp/
+# poster/
