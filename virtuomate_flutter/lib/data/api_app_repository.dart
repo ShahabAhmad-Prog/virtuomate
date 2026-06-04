@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:virtuomate_flutter/core/models.dart';
-import 'package:virtuomate_flutter/core/models.dart';
 import 'package:virtuomate_flutter/data/app_repository.dart';
 import 'package:virtuomate_flutter/network/api_client.dart';
 

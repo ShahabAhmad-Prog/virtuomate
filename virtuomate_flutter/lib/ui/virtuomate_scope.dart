@@ -595,7 +595,7 @@ class VirtuoMateController extends ChangeNotifier {
       saveVideoCvDraft(videoCvDraft.copyWith(renderVideoUrl: videoUrl));
       generateVideoCv();
       notifyListeners();
-      return videoUrl ?? job.downloadUrl;
+      return videoUrl;
     } catch (e) {
       errorMessage = e.toString().replaceFirst('Exception: ', '');
       notifyListeners();
