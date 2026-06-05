@@ -1,9 +1,3 @@
-import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:http/http.dart' as http;
-
 /// User-facing message for network / connection failures.
 String friendlyConnectionError(Object error, {required String apiBaseUrl}) {
   final msg = error.toString().toLowerCase();

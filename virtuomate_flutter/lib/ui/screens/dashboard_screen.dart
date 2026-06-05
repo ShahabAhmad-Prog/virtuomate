@@ -7,6 +7,7 @@ import 'package:virtuomate_flutter/core/models.dart';
 import 'package:virtuomate_flutter/services/app_service.dart';
 import 'package:virtuomate_flutter/ui/shared/achievement_feedback.dart';
 import 'package:virtuomate_flutter/ui/shared/neural_connectivity_card.dart';
+import 'package:virtuomate_flutter/ui/shared/profile_avatar_thumbnail.dart';
 import 'package:virtuomate_flutter/ui/virtuomate_bindings.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -31,17 +32,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final c = VirtuoMateScope.of(context);
-    final a = c.analytics;
-    final sessions = c.sessions.take(2).toList();
-    final neural = c.neuralConnectivity;
-    final missionPct = c.missionProgress / 100.0;
-    final totalSessions = c.sessions.length;
-    final freeSessionsLeft =
-        (AppService.freeSessionLimit - totalSessions).clamp(0, AppService.freeSessionLimit);
-    final atConversationLimit = !c.canRunConversation && !c.isPremium;
+    return ListenableBuilder(
+      listenable: VirtuoMateScope.of(context),
+      builder: (context, _) {
+        final c = VirtuoMateScope.of(context);
+        final a = c.analytics;
+        final sessions = c.sessions.take(2).toList();
+        final neural = c.neuralConnectivity;
+        final missionPct = c.missionProgress / 100.0;
+        final totalSessions = c.sessions.length;
+        final freeSessionsLeft =
+            (AppService.freeSessionLimit - totalSessions).clamp(0, AppService.freeSessionLimit);
+        final atConversationLimit = !c.canRunConversation && !c.isPremium;
 
-    return MvpShell(
+        return MvpShell(
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(
@@ -107,9 +111,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         Navigator.pushNamed(context, AppRoutes.settings);
                       }),
                       const SizedBox(width: 10),
-                      _dashIconBtn(context, Icons.person_outline, () {
-                        Navigator.pushNamed(context, AppRoutes.userConfig);
-                      }),
+                      InkWell(
+                        onTap: () => Navigator.pushNamed(context, AppRoutes.userConfig),
+                        borderRadius: BorderRadius.circular(22),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const ProfileAvatarThumbnail(size: 36, borderWidth: 1.5),
+                            const SizedBox(height: 2),
+                            Text(
+                              AppText.tr(context, 'profile'),
+                              style: const TextStyle(
+                                color: VirtuoMvpColors.textMuted,
+                                fontSize: 9,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -562,6 +582,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ),
       ),
+    );
+      },
     );
   }
 

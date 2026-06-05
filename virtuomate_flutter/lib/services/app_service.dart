@@ -2,7 +2,6 @@ import 'package:virtuomate_flutter/config/demo_account_config.dart';
 import 'package:virtuomate_flutter/core/achievements.dart';
 import 'package:virtuomate_flutter/core/avatar_customization.dart';
 import 'package:virtuomate_flutter/core/models.dart';
-import 'package:virtuomate_flutter/core/voice_profile_codec.dart';
 import 'package:virtuomate_flutter/auth/auth_gateway.dart';
 import 'package:virtuomate_flutter/data/app_repository.dart';
 import 'package:virtuomate_flutter/external/subscription_gateway.dart';
@@ -53,7 +52,7 @@ class AppService {
       _neuralStatus = NeuralConnectivityStatus.localMode();
       return _neuralStatus;
     }
-    _neuralStatus = await _neuralConnectivity!.fetchStatus();
+    _neuralStatus = await _neuralConnectivity.fetchStatus();
     return _neuralStatus;
   }
 
@@ -264,9 +263,10 @@ class AppService {
     final trimmed = text.trim();
     if (trimmed.length < 12) return null;
 
-    if (_coachEngine is ApiCoachEngine) {
+    final apiEngine = _coachEngine;
+    if (apiEngine is ApiCoachEngine) {
       try {
-        return await (_coachEngine as ApiCoachEngine).analyzeText(
+        return await apiEngine.analyzeText(
           text: trimmed,
           sessionType: sessionType,
         );

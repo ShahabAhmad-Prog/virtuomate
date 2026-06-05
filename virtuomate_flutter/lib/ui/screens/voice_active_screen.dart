@@ -50,7 +50,7 @@ class _VoiceActiveScreenState extends State<VoiceActiveScreen> {
 
   Future<void> _speak(VirtuoMateController c, String text) async {
     if (!_audioOn) return;
-    await _ttsSpeaker.speak(text, c.voiceProfile, voiceGender: c.voiceGender);
+    await _ttsSpeaker.speak(text, c.encodedVoiceProfile);
   }
 
   Future<void> _submitText(VirtuoMateController c) async {
@@ -143,7 +143,7 @@ class _VoiceActiveScreenState extends State<VoiceActiveScreen> {
   @override
   Widget build(BuildContext context) {
     final c = VirtuoMateScope.of(context);
-    final avatarSize = isCompactWidth(context) ? 96.0 : 120.0;
+    final avatarSize = isCompactWidth(context) ? 112.0 : 140.0;
     return MvpShell(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -155,35 +155,31 @@ class _VoiceActiveScreenState extends State<VoiceActiveScreen> {
           ),
           child: Column(
             children: [
-              ValueListenableBuilder<bool>(
+              ListenableBuilder(
+                listenable: c,
+                builder: (context, _) => ValueListenableBuilder<bool>(
                 valueListenable: _ttsSpeaker.isSpeaking,
                 builder: (context, speaking, _) {
-                  return ValueListenableBuilder<double>(
-                    valueListenable: _ttsSpeaker.mouthOpen,
-                    builder: (context, mouth, _) {
-                      return Stack(
-                        alignment: Alignment.bottomCenter,
-                        children: [
-                          AvatarPresence(
-                            selfieUrlOrPath: c.avatarImage,
-                            useTemplate: c.avatarUseTemplate,
-                            size: avatarSize,
-                            isSpeaking: speaking,
-                            mouthOpen: mouth,
-                            isListening: _isListening,
-                            emotion: _emotion.isNotEmpty
-                                ? _emotion
-                                : c.avatarEmotionState,
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            child: EmotionBadge(emotion: _emotion),
-                          ),
-                        ],
-                      );
-                    },
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      AvatarPresence(
+                        selfieUrlOrPath: c.avatarImage,
+                        useTemplate: c.avatarUseTemplate,
+                        size: avatarSize,
+                        isSpeaking: speaking,
+                        isListening: _isListening,
+                        emotion: _emotion.isNotEmpty
+                            ? _emotion
+                            : c.avatarEmotionState,
+                      ),
+                      const SizedBox(height: 10),
+                      EmotionBadge(emotion: _emotion),
+                    ],
                   );
                 },
+              ),
               ),
               const SizedBox(height: 16),
               LayoutBuilder(

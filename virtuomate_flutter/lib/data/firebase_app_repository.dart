@@ -273,7 +273,8 @@ class FirebaseAppRepository implements AppRepository {
     _videoCvCount = (data['videoCvCount'] as num?)?.toInt() ?? 0;
     _missionProgress = (data['missionProgress'] as num?)?.toInt() ?? 0;
     final draft = data['videoCvDraft'] as Map<String, dynamic>?;
-    _preferences = AppPreferences.fromJson(
+    _preferences = AppPreferences.mergeFromJson(
+      _preferences,
       data['preferences'] as Map<String, dynamic>?,
     );
     if (draft != null) {

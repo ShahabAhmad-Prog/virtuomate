@@ -439,6 +439,8 @@ function createApp() {
       script: z.string().min(10).max(8000),
       format: z.enum(['mp4', 'webm']).optional(),
       draft: z.record(z.string(), z.unknown()).optional(),
+      voiceProfile: z.string().min(3).max(80).optional(),
+      voiceGender: z.enum(['male', 'female']).optional(),
     });
     const parsed = schema.safeParse(req.body || {});
     if (!parsed.success) return res.status(400).json({ error: 'Invalid payload.' });
@@ -480,6 +482,8 @@ function createApp() {
             avatarImageUrl: draft.avatarImageUrl || profile.avatarImageUrl || '',
           },
           format,
+          voiceProfile: parsed.data.voiceProfile || profile.voiceProfile || 'confident-neutral',
+          voiceGender: parsed.data.voiceGender || profile.voiceGender || 'female',
         });
         const ext = format === 'webm' ? 'webm' : 'mp4';
         videoObjectPath = `video-cv/${uid}/renders/${jobId}.${ext}`;

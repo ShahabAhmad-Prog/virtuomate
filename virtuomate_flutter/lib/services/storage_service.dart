@@ -16,7 +16,7 @@ class StorageService {
     final fileName = file.uri.pathSegments.last;
     final bytes = await file.readAsBytes();
 
-    final result = await _api!.postJson(
+    final result = await _api.postJson(
       '/storage/avatar',
       {
         'fileName': fileName,

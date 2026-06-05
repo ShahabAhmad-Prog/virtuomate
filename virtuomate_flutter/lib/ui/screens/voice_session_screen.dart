@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 import 'package:speech_to_text/speech_to_text.dart' as stt;
@@ -9,6 +7,7 @@ import 'package:virtuomate_flutter/theme/virtuomate_mvp_theme.dart';
 import 'package:virtuomate_flutter/ui/virtuomate_bindings.dart';
 
 import 'package:virtuomate_flutter/ui/mvp/mvp_shell.dart';
+import 'package:virtuomate_flutter/ui/shared/avatar_presence.dart';
 
 
 
@@ -256,48 +255,14 @@ class _VoiceSessionScreenState extends State<VoiceSessionScreen> {
 
               children: [
 
-                Container(
-
-                  width: 180,
-
-                  height: 180,
-
-                  decoration: BoxDecoration(
-
-                    shape: BoxShape.circle,
-
-                    border: Border.all(color: VirtuoMvpColors.cyan.withValues(alpha: 0.5), width: 3),
-
-                    boxShadow: [
-
-                      BoxShadow(
-
-                        color: VirtuoMvpColors.cyan.withValues(alpha: 0.25),
-
-                        blurRadius: 24,
-
-                        spreadRadius: 2,
-
-                      ),
-
-                    ],
-
+                ListenableBuilder(
+                  listenable: c,
+                  builder: (context, _) => AvatarPresence(
+                    selfieUrlOrPath: c.avatarImage,
+                    useTemplate: c.avatarUseTemplate,
+                    emotion: c.avatarEmotionState,
+                    size: 180,
                   ),
-
-                  child: ClipOval(
-
-                    child: c.avatarImage.trim().isNotEmpty
-
-                        ? (c.avatarImage.startsWith('http')
-
-                            ? Image.network(c.avatarImage, fit: BoxFit.cover)
-
-                            : Image.file(File(c.avatarImage), fit: BoxFit.cover))
-
-                        : const Icon(Icons.person, size: 72, color: VirtuoMvpColors.textMuted),
-
-                  ),
-
                 ),
 
                 const SizedBox(height: 24),

@@ -53,7 +53,7 @@ class _RolePlayScreenState extends State<RolePlayScreen> {
   }
 
   Future<void> _speakWithProfile(VirtuoMateController c, String text) async {
-    await applyVoiceProfileToTts(_tts, c.voiceProfile, voiceGender: c.voiceGender);
+    await applyVoiceProfileToTts(_tts, c.encodedVoiceProfile);
     await _tts.speak(text);
   }
 
@@ -321,7 +321,7 @@ class _RolePlayScreenState extends State<RolePlayScreen> {
                     expanded: true,
                     onPressed: () async {
                       final ok = await c.completeRolePlay(_scenarioTitles[_scenarioIndex], _input.text);
-                      if (!mounted) return;
+                      if (!context.mounted) return;
                       setState(() => _error = ok ? '' : c.errorMessage);
                       if (ok) {
                         showAchievementUnlocks(context, c.drainAchievementUnlocks());

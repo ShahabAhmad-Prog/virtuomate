@@ -4,6 +4,7 @@ import 'package:virtuomate_flutter/theme/virtuomate_mvp_theme.dart';
 import 'package:virtuomate_flutter/ui/virtuomate_bindings.dart';
 import 'package:virtuomate_flutter/ui/mvp/mvp_shell.dart';
 import 'package:virtuomate_flutter/ui/mvp/mvp_widgets.dart';
+import 'package:virtuomate_flutter/ui/shared/profile_avatar_thumbnail.dart';
 import 'package:virtuomate_flutter/ui/shared/ui_helpers.dart';
 
 class UserConfigScreen extends StatefulWidget {
@@ -57,16 +58,16 @@ class _UserConfigScreenState extends State<UserConfigScreen> {
     return MvpShell(
       body: Column(
         children: [
-          const MvpTopBar(title: 'User Configuration'),
+          MvpTopBar(title: AppText.tr(context, 'profile')),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(VirtuoMvpSpacing.lg),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Manage your neural interface preferences',
-                    style: TextStyle(color: VirtuoMvpColors.textMuted, fontSize: 12),
+                  Text(
+                    AppText.tr(context, 'manage_prefs'),
+                    style: const TextStyle(color: VirtuoMvpColors.textMuted, fontSize: 12),
                   ),
                   const SizedBox(height: 14),
                   VCard(
@@ -75,32 +76,9 @@ class _UserConfigScreenState extends State<UserConfigScreen> {
                       children: [
                         Row(
                           children: [
-                            Stack(
-                              children: [
-                                Container(
-                                  width: 72,
-                                  height: 72,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    gradient: const LinearGradient(
-                                      colors: [VirtuoMvpColors.purple, VirtuoMvpColors.blue],
-                                    ),
-                                  ),
-                                  child: const Icon(Icons.person_outline, color: VirtuoMvpColors.text, size: 32),
-                                ),
-                                Positioned(
-                                  right: 2,
-                                  bottom: 2,
-                                  child: Container(
-                                    width: 12,
-                                    height: 12,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: VirtuoMvpColors.green,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                            const ProfileAvatarThumbnail(
+                              size: 72,
+                              showOnlineDot: true,
                             ),
                             const SizedBox(width: 14),
                             Expanded(

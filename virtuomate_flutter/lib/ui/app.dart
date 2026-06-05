@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:virtuomate_flutter/auth/auth_gateway.dart';
 import 'package:virtuomate_flutter/auth/firebase_auth_gateway.dart';
 import 'package:virtuomate_flutter/config/app_config.dart';
@@ -16,6 +17,7 @@ import 'package:virtuomate_flutter/intelligence/coach_engine.dart';
 import 'package:virtuomate_flutter/network/api_client.dart';
 import 'package:virtuomate_flutter/services/admin_api_service.dart';
 import 'package:virtuomate_flutter/services/app_service.dart';
+import 'package:virtuomate_flutter/services/locale_storage.dart';
 import 'package:virtuomate_flutter/services/profile_sync_service.dart';
 import 'package:virtuomate_flutter/core/neural_connectivity.dart';
 import 'package:virtuomate_flutter/services/neural_connectivity_service.dart';
@@ -23,6 +25,7 @@ import 'package:virtuomate_flutter/services/startup_health.dart';
 import 'package:virtuomate_flutter/services/storage_service.dart';
 import 'package:virtuomate_flutter/services/video_cv_render_service.dart';
 import 'package:virtuomate_flutter/theme/virtuomate_mvp_theme.dart';
+import 'package:virtuomate_flutter/ui/app_text.dart';
 import 'package:virtuomate_flutter/ui/routes.dart';
 import 'package:virtuomate_flutter/ui/screens/admin_screens.dart';
 import 'package:virtuomate_flutter/ui/screens/achievements_screen.dart';
@@ -38,6 +41,7 @@ import 'package:virtuomate_flutter/ui/screens/premium_screen.dart';
 import 'package:virtuomate_flutter/ui/screens/role_play_screen.dart';
 import 'package:virtuomate_flutter/ui/screens/session_screen.dart';
 import 'package:virtuomate_flutter/ui/screens/settings_screen.dart';
+import 'package:virtuomate_flutter/ui/shared/virtuomate_logo.dart';
 import 'package:virtuomate_flutter/ui/screens/user_config_screen.dart';
 import 'package:virtuomate_flutter/ui/screens/video_cv_preview_screen.dart';
 import 'package:virtuomate_flutter/ui/screens/video_cv_wizard_screen.dart';
@@ -73,6 +77,7 @@ class _VirtuoMateRootState extends State<VirtuoMateRoot> {
   }
 
   Future<_Deps> _buildDeps() async {
+    final storedLanguageCode = await LocaleStorage.read();
     if (!AppConfig.useFirebase) {
       return _Deps(
         authGateway: InMemoryAuthGateway(),
@@ -84,6 +89,7 @@ class _VirtuoMateRootState extends State<VirtuoMateRoot> {
         apiClient: null,
         onExportData: null,
         onDeleteAccount: null,
+        storedLanguageCode: storedLanguageCode,
       );
     }
 
@@ -128,6 +134,7 @@ class _VirtuoMateRootState extends State<VirtuoMateRoot> {
             final response = await apiClient.deleteJson('/user');
             return response['deleted'] == true;
           },
+          storedLanguageCode: storedLanguageCode,
         );
       }
 
@@ -143,6 +150,7 @@ class _VirtuoMateRootState extends State<VirtuoMateRoot> {
         onExportData: null,
         onDeleteAccount: null,
         firebaseRepository: fbRepo,
+        storedLanguageCode: storedLanguageCode,
       );
     } catch (e) {
       final msg = e.toString().replaceFirst('Exception: ', '');
@@ -163,6 +171,7 @@ class _VirtuoMateRootState extends State<VirtuoMateRoot> {
         onExportData: null,
         onDeleteAccount: null,
         bootstrapWarning: 'Firebase failed to start: $msg',
+        storedLanguageCode: storedLanguageCode,
       );
     }
   }
@@ -207,16 +216,27 @@ class _VirtuoMateRootState extends State<VirtuoMateRoot> {
           );
         }
         if (!snap.hasData) {
-          return const MaterialApp(
+          return MaterialApp(
             debugShowCheckedModeBanner: false,
+            theme: ThemeData.dark(),
             home: Scaffold(
+              backgroundColor: VirtuoMvpColors.bg0,
               body: Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    CircularProgressIndicator(),
-                    SizedBox(height: 16),
-                    Text('Starting VirtuoMate…'),
+                    CircularProgressIndicator(
+                      color: VirtuoMvpColors.cyan.withValues(alpha: 0.85),
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'Starting VirtuoMate…',
+                      style: TextStyle(
+                        color: VirtuoMvpColors.textMuted,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -239,6 +259,7 @@ class _VirtuoMateRootState extends State<VirtuoMateRoot> {
           service: service,
           firebaseAuthReady: deps.firebaseEnabled,
           bootstrapWarning: deps.bootstrapWarning,
+          initialLanguageCode: deps.storedLanguageCode,
           adminApi: deps.apiClient != null
               ? AdminApiService(deps.apiClient!)
               : null,
@@ -258,7 +279,6 @@ class _VirtuoMateRootState extends State<VirtuoMateRoot> {
             if (user != null) {
               try {
                 await service.bootstrapUserProfile();
-                controller.applyStoredPreferences();
                 controller.refreshData();
                 if (!deps.useBackendApi && deps.firebaseRepository != null) {
                   controller.startRealtimeSync();
@@ -273,7 +293,7 @@ class _VirtuoMateRootState extends State<VirtuoMateRoot> {
           child: _ProfileSyncHost(
             service: service,
             useBackendApi: deps.useBackendApi,
-            onRefresh: controller.refreshData,
+            onRefresh: controller.applyStoredPreferences,
             child: VirtuoMateApp(
               firebaseEnabled: deps.firebaseEnabled,
               useBackendApi: deps.useBackendApi,
@@ -300,89 +320,168 @@ class VirtuoMateApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = VirtuoMateScope.of(context);
-    final baseTheme = ThemeData(
-      colorSchemeSeed: Colors.indigo,
-      useMaterial3: true,
-      visualDensity: VisualDensity.adaptivePlatformDensity,
-    );
-    final darkBase = ThemeData(
-      useMaterial3: true,
-      brightness: Brightness.dark,
-      scaffoldBackgroundColor: VirtuoMvpColors.bg0,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: VirtuoMvpColors.purple,
-        brightness: Brightness.dark,
-        surface: VirtuoMvpColors.bg1,
-      ),
-    );
-    return VirtuoMateRuntime(
-      firebaseEnabled: firebaseEnabled,
-      useBackendApi: useBackendApi,
-      bootstrapWarning: bootstrapWarning,
-      child: MaterialApp(
-      title: 'VirtuoMate',
-      debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.dark,
-      locale: c.locale,
-      supportedLocales: const [Locale('en'), Locale('ur')],
-      theme: c.highContrast
-          ? baseTheme.copyWith(
-              colorScheme: ColorScheme.fromSeed(
-                seedColor: Colors.black,
-                brightness: Brightness.light,
-                contrastLevel: 1,
-              ),
-            )
-          : baseTheme,
-      darkTheme: c.highContrast
-          ? darkBase.copyWith(
-              colorScheme: ColorScheme.fromSeed(
-                seedColor: VirtuoMvpColors.cyan,
-                brightness: Brightness.dark,
-                contrastLevel: 1,
-              ),
-            )
-          : darkBase,
-      builder: (context, child) {
-        final mediaQuery = MediaQuery.of(context);
-        return MediaQuery(
-          data: mediaQuery.copyWith(
-            textScaler: TextScaler.linear(c.textScale),
-          ),
-          child: child ?? const SizedBox.shrink(),
+    return ListenableBuilder(
+      listenable: VirtuoMateScope.of(context),
+      builder: (context, _) {
+        final c = VirtuoMateScope.of(context);
+        final baseTheme = ThemeData(
+          colorSchemeSeed: Colors.indigo,
+          useMaterial3: true,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
         );
-      },
-      initialRoute: AppRoutes.welcome,
-      routes: {
-        AppRoutes.welcome: (_) => WelcomeScreen(
+        final darkBase = ThemeData(
+          useMaterial3: true,
+          brightness: Brightness.dark,
+          scaffoldBackgroundColor: VirtuoMvpColors.bg0,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: VirtuoMvpColors.purple,
+            brightness: Brightness.dark,
+            surface: VirtuoMvpColors.bg1,
+          ),
+        );
+        return VirtuoMateRuntime(
+          firebaseEnabled: firebaseEnabled,
+          useBackendApi: useBackendApi,
+          bootstrapWarning: bootstrapWarning,
+          child: MaterialApp(
+            title: 'VirtuoMate',
+            debugShowCheckedModeBanner: false,
+            themeMode: ThemeMode.dark,
+            locale: c.locale,
+            supportedLocales: const [
+              Locale('en'),
+              Locale('ur'),
+              Locale('ur', 'PK'),
+            ],
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            localeResolutionCallback: (deviceLocale, supported) {
+              final code = c.locale.languageCode;
+              for (final locale in supported) {
+                if (locale.languageCode == code) return locale;
+              }
+              return const Locale('en');
+            },
+            theme: c.highContrast
+                ? baseTheme.copyWith(
+                    colorScheme: ColorScheme.fromSeed(
+                      seedColor: Colors.black,
+                      brightness: Brightness.light,
+                      contrastLevel: 1,
+                    ),
+                  )
+                : baseTheme,
+            darkTheme: c.highContrast
+                ? darkBase.copyWith(
+                    colorScheme: ColorScheme.fromSeed(
+                      seedColor: VirtuoMvpColors.cyan,
+                      brightness: Brightness.dark,
+                      contrastLevel: 1,
+                    ),
+                  )
+                : darkBase,
+            builder: (context, child) {
+              final mediaQuery = MediaQuery.of(context);
+              final direction = AppText.textDirectionFor(c.locale);
+              return MediaQuery(
+                data: mediaQuery.copyWith(
+                  textScaler: TextScaler.linear(c.textScale),
+                ),
+                child: DefaultTextStyle.merge(
+                  style: const TextStyle(
+                    fontFamilyFallback: [
+                      'Roboto',
+                      'Noto Nastaliq Urdu',
+                      'Noto Sans Arabic',
+                      'sans-serif',
+                    ],
+                  ),
+                  child: Directionality(
+                    textDirection: direction,
+                    child: child ?? const SizedBox.shrink(),
+                  ),
+                ),
+              );
+            },
+            home: _AppHomeGate(
               firebaseEnabled: firebaseEnabled,
               useBackendApi: useBackendApi,
             ),
-        AppRoutes.login: (_) => const LoginScreen(),
-        AppRoutes.register: (_) => RegisterScreen(),
-        AppRoutes.dashboard: (_) => const DashboardScreen(),
-        AppRoutes.avatar: (_) => const AvatarScreen(),
-        AppRoutes.session: (_) => const SessionScreen(),
-        AppRoutes.coachChat: (_) => const CoachChatScreen(),
-        AppRoutes.voiceSession: (_) => const VoiceSessionScreen(),
-        AppRoutes.voiceActive: (_) => const VoiceActiveScreen(),
-        AppRoutes.interview: (_) => const InterviewScreen(),
-        AppRoutes.presentation: (_) => const PresentationScreen(),
-        AppRoutes.rolePlay: (_) => const RolePlayScreen(),
-        AppRoutes.videoCv: (_) => const VideoCvWizardScreen(),
-        AppRoutes.videoCvPreview: (_) => const VideoCvPreviewScreen(),
-        AppRoutes.feedback: (_) => const FeedbackScreen(),
-        AppRoutes.premium: (_) => const PremiumScreen(),
-        AppRoutes.analytics: (_) => const AnalyticsScreen(),
-        AppRoutes.achievements: (_) => const AchievementsScreen(),
-        AppRoutes.userConfig: (_) => const UserConfigScreen(),
-        AppRoutes.adminUsers: (_) => const AdminUserManagementScreen(),
-        AppRoutes.adminTrainingAnalytics: (_) =>
-            const AdminTrainingAnalyticsScreen(),
-        AppRoutes.settings: (_) => const SettingsScreen(),
+            routes: {
+              AppRoutes.welcome: (_) => WelcomeScreen(
+                    firebaseEnabled: firebaseEnabled,
+                    useBackendApi: useBackendApi,
+                  ),
+              AppRoutes.login: (_) => const LoginScreen(),
+              AppRoutes.register: (_) => RegisterScreen(),
+              AppRoutes.dashboard: (_) => const DashboardScreen(),
+              AppRoutes.avatar: (_) => const AvatarScreen(),
+              AppRoutes.session: (_) => const SessionScreen(),
+              AppRoutes.coachChat: (_) => const CoachChatScreen(),
+              AppRoutes.voiceSession: (_) => const VoiceSessionScreen(),
+              AppRoutes.voiceActive: (_) => const VoiceActiveScreen(),
+              AppRoutes.interview: (_) => const InterviewScreen(),
+              AppRoutes.presentation: (_) => const PresentationScreen(),
+              AppRoutes.rolePlay: (_) => const RolePlayScreen(),
+              AppRoutes.videoCv: (_) => const VideoCvWizardScreen(),
+              AppRoutes.videoCvPreview: (_) => const VideoCvPreviewScreen(),
+              AppRoutes.feedback: (_) => const FeedbackScreen(),
+              AppRoutes.premium: (_) => const PremiumScreen(),
+              AppRoutes.analytics: (_) => const AnalyticsScreen(),
+              AppRoutes.achievements: (_) => const AchievementsScreen(),
+              AppRoutes.userConfig: (_) => const UserConfigScreen(),
+              AppRoutes.adminUsers: (_) => const AdminUserManagementScreen(),
+              AppRoutes.adminTrainingAnalytics: (_) =>
+                  const AdminTrainingAnalyticsScreen(),
+              AppRoutes.settings: (_) => const SettingsScreen(),
+            },
+          ),
+        );
       },
-    ),
+    );
+  }
+}
+
+
+class _AppHomeGate extends StatefulWidget {
+  const _AppHomeGate({
+    required this.firebaseEnabled,
+    required this.useBackendApi,
+  });
+
+  final bool firebaseEnabled;
+  final bool useBackendApi;
+
+  @override
+  State<_AppHomeGate> createState() => _AppHomeGateState();
+}
+
+class _AppHomeGateState extends State<_AppHomeGate> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      VirtuoMateLogo.precacheWelcome(context);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: VirtuoMateScope.of(context),
+      builder: (context, _) {
+        final c = VirtuoMateScope.of(context);
+        if (c.user != null) {
+          return const DashboardScreen();
+        }
+        return WelcomeScreen(
+          firebaseEnabled: widget.firebaseEnabled,
+          useBackendApi: widget.useBackendApi,
+        );
+      },
     );
   }
 }
@@ -440,6 +539,7 @@ class _Deps {
     this.firebaseRepository,
     this.initialNeuralStatus,
     this.bootstrapWarning,
+    this.storedLanguageCode,
   });
 
   final AuthGateway authGateway;
@@ -454,6 +554,7 @@ class _Deps {
   final Future<bool> Function()? onDeleteAccount;
   final NeuralConnectivityStatus? initialNeuralStatus;
   final String? bootstrapWarning;
+  final String? storedLanguageCode;
 }
 
 

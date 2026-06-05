@@ -9,6 +9,7 @@ import 'package:video_player/video_player.dart';
 import 'package:virtuomate_flutter/config/app_config.dart';
 import 'package:virtuomate_flutter/network/api_error_message.dart';
 import 'package:virtuomate_flutter/services/cloud_download_service.dart';
+import 'package:virtuomate_flutter/core/avatar_customization.dart';
 import 'package:virtuomate_flutter/theme/virtuomate_mvp_theme.dart';
 import 'package:virtuomate_flutter/ui/mvp/mvp_shell.dart';
 import 'package:virtuomate_flutter/ui/mvp/mvp_widgets.dart';
@@ -112,6 +113,13 @@ class _VideoCvPreviewScreenState extends State<VideoCvPreviewScreen> {
       } catch (e) {
         if (!_isVideoPlayerChannelError(e)) rethrow;
       }
+    }
+
+    try {
+      await _loadVideoPreviewFromUrl(videoUrl, locationHint: _savedLocationHint ?? locationHint);
+      return;
+    } catch (_) {
+      // Fall back to external player when in-app preview cannot load.
     }
 
     if (!mounted) return;
@@ -278,7 +286,7 @@ class _VideoCvPreviewScreenState extends State<VideoCvPreviewScreen> {
     _elapsedSeconds = 0;
     _voicePlayback = 0;
     setState(() => _isVoicePlaying = true);
-    await applyVoiceProfileToTts(_tts, c.voiceProfile, voiceGender: c.voiceGender);
+    await applyVoiceProfileToTts(_tts, c.encodedVoiceProfile);
 
     _voiceTimer = Timer.periodic(const Duration(seconds: 1), (t) {
       if (!mounted) {
@@ -525,6 +533,16 @@ class _VideoCvPreviewScreenState extends State<VideoCvPreviewScreen> {
                     icon: Icons.record_voice_over_outlined,
                     expanded: true,
                     onPressed: script.isEmpty ? null : () => _toggleVoicePlayback(c, script),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'Coach voice: ${coachVoiceSummary(gender: c.resolvedVoice.gender, toneId: c.resolvedVoice.toneId)}',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: VirtuoMvpColors.textMuted,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   if (_isVoicePlaying) ...[
                     const SizedBox(height: 8),

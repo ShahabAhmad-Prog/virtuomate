@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:virtuomate_flutter/config/app_config.dart';
 import 'package:virtuomate_flutter/core/avatar_emotion.dart';
 import 'package:virtuomate_flutter/theme/virtuomate_mvp_theme.dart';
 import 'package:virtuomate_flutter/ui/shared/avatar_rive_overlay.dart';
 
-/// Layer 2 (emotion transitions) + Layer 3 (TTS lip-sync) coach avatar.
+/// Coach avatar with emotion transitions.
 class AvatarCoachView extends StatefulWidget {
   const AvatarCoachView({
     super.key,
@@ -15,8 +17,7 @@ class AvatarCoachView extends StatefulWidget {
     this.size = 120,
     this.isSpeaking = false,
     this.isListening = false,
-    this.mouthOpen = 0,
-    this.enableRiveOverlay = true,
+    this.enableRiveOverlay = false,
   });
 
   final String selfieUrlOrPath;
@@ -25,7 +26,6 @@ class AvatarCoachView extends StatefulWidget {
   final double size;
   final bool isSpeaking;
   final bool isListening;
-  final double mouthOpen;
   final bool enableRiveOverlay;
 
   @override
@@ -58,7 +58,6 @@ class _AvatarCoachViewState extends State<AvatarCoachView>
       vsync: this,
       duration: const Duration(milliseconds: 1100),
     );
-
     _shownState = _resolveDisplayState();
     _previousState = _shownState;
     _syncListenPulse();
@@ -118,6 +117,35 @@ class _AvatarCoachViewState extends State<AvatarCoachView>
     }
   }
 
+  String _resolveImageRef(String raw) {
+    var path = raw.trim();
+    if (path.isEmpty) return path;
+    if (path.startsWith('file://')) {
+      if (kIsWeb) return '';
+      try {
+        path = Uri.parse(path).toFilePath(windows: Platform.isWindows);
+      } catch (_) {
+        return '';
+      }
+    }
+    if (path.startsWith('http://') || path.startsWith('https://')) return path;
+    if (path.startsWith('/')) {
+      final base = AppConfig.backendBaseUrl.trim();
+      if (base.isNotEmpty) {
+        return Uri.parse(base).resolve(path).toString();
+      }
+    }
+    return path;
+  }
+
+  Widget _placeholderFace() {
+    final side = widget.size;
+    return ColoredBox(
+      color: VirtuoMvpColors.surface,
+      child: Icon(Icons.face_retouching_natural, size: side * 0.42, color: VirtuoMvpColors.cyan),
+    );
+  }
+
   Widget _imageForState(AvatarEmotionState state) {
     final dpr = MediaQuery.devicePixelRatioOf(context);
     final side = widget.size;
@@ -129,37 +157,58 @@ class _AvatarCoachViewState extends State<AvatarCoachView>
       cacheHeight: (side * dpr).round(),
       cacheWidth: (side * dpr).round(),
       filterQuality: FilterQuality.medium,
-      errorBuilder: (_, __, ___) => ColoredBox(
-        color: VirtuoMvpColors.surface,
-        child: Icon(Icons.smart_toy_outlined, size: side * 0.45),
-      ),
+      errorBuilder: (context, error, stackTrace) => _placeholderFace(),
     );
   }
 
   Widget _portraitBody() {
-    final path = widget.selfieUrlOrPath.trim();
+    final path = _resolveImageRef(widget.selfieUrlOrPath);
     if (path.isEmpty) return _animatedTemplateBody();
+    final side = widget.size;
     Widget img;
-    if (path.startsWith('http')) {
+    if (path.startsWith('http://') || path.startsWith('https://')) {
       final bust = path.contains('?') ? '$path&' : '$path?';
       img = Image.network(
-        '${bust}v=${path.hashCode}',
+        '${bust}v=${path.hashCode.abs()}',
+        width: side,
+        height: side,
         fit: BoxFit.cover,
         key: ValueKey(path),
+        gaplessPlayback: true,
+        loadingBuilder: (context, child, progress) {
+          if (progress == null) return child;
+          return ColoredBox(
+            color: VirtuoMvpColors.surface,
+            child: Center(
+              child: SizedBox(
+                width: side * 0.28,
+                height: side * 0.28,
+                child: const CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: VirtuoMvpColors.cyan,
+                ),
+              ),
+            ),
+          );
+        },
+        errorBuilder: (context, error, stackTrace) => _animatedTemplateBody(),
       );
-    } else {
+    } else if (!kIsWeb) {
       final file = File(path);
       img = file.existsSync()
-          ? Image.file(file, fit: BoxFit.cover, key: ValueKey(path))
+          ? Image.file(
+              file,
+              width: side,
+              height: side,
+              fit: BoxFit.cover,
+              key: ValueKey(path),
+              errorBuilder: (context, error, stackTrace) => _animatedTemplateBody(),
+            )
           : _animatedTemplateBody();
+    } else {
+      return _animatedTemplateBody();
     }
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        img,
-        if (widget.isSpeaking && widget.mouthOpen > 0.05) _lipOverlay(),
-      ],
-    );
+    return img;
   }
 
   Widget _animatedTemplateBody() {
@@ -191,32 +240,10 @@ class _AvatarCoachViewState extends State<AvatarCoachView>
     );
   }
 
-  Widget _lipOverlay() {
-    final open = widget.mouthOpen.clamp(0.0, 1.0);
-    final w = widget.size * (0.22 + open * 0.08);
-    final h = widget.size * (0.035 + open * 0.065);
-    return Positioned(
-      left: (widget.size - w) / 2,
-      bottom: widget.size * 0.26,
-      child: Container(
-        width: w,
-        height: h,
-        decoration: BoxDecoration(
-          color: Colors.black.withValues(alpha: 0.28 + open * 0.12),
-          borderRadius: BorderRadius.vertical(
-            top: Radius.elliptical(w * 0.45, h * 0.42),
-            bottom: Radius.elliptical(w * 0.4, h * 0.58),
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _body() {
-    if (widget.useTemplate || widget.selfieUrlOrPath.trim().isEmpty) {
-      return _animatedTemplateBody();
-    }
-    return _portraitBody();
+    final path = _resolveImageRef(widget.selfieUrlOrPath);
+    if (!widget.useTemplate && path.isNotEmpty) return _portraitBody();
+    return _animatedTemplateBody();
   }
 
   @override
@@ -231,10 +258,13 @@ class _AvatarCoachViewState extends State<AvatarCoachView>
       builder: (context, child) {
         final listenRing = listening ? 2.5 + _listenPulse.value * 2.5 : 2.0;
         final scale = speaking
-            ? 1.0 + (widget.mouthOpen * 0.04)
+            ? 1.02
             : (listening ? 1.0 + _listenPulse.value * 0.02 : 1.0);
 
-        return Transform.scale(
+        final ringPad = listenRing + 2;
+        return Padding(
+          padding: EdgeInsets.all(ringPad),
+          child: Transform.scale(
           scale: scale,
           child: Container(
             width: widget.size,
@@ -265,12 +295,12 @@ class _AvatarCoachViewState extends State<AvatarCoachView>
                     AvatarRiveOverlay(
                       size: widget.size,
                       state: state,
-                      mouthOpen: widget.mouthOpen,
                     ),
                 ],
               ),
             ),
           ),
+        ),
         );
       },
     );

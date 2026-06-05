@@ -8,6 +8,7 @@ import 'package:virtuomate_flutter/theme/virtuomate_mvp_theme.dart';
 import 'package:virtuomate_flutter/ui/mvp/mvp_shell.dart';
 import 'package:virtuomate_flutter/ui/mvp/mvp_widgets.dart';
 import 'package:virtuomate_flutter/ui/shared/neural_connectivity_card.dart';
+import 'package:virtuomate_flutter/ui/shared/profile_avatar_thumbnail.dart';
 import 'package:virtuomate_flutter/ui/virtuomate_bindings.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -22,18 +23,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final c = VirtuoMateScope.of(context);
-      c.applyStoredPreferences();
-      c.refreshNeuralConnectivity();
+      VirtuoMateScope.of(context).refreshNeuralConnectivity();
+    });
+  }
+
+  void _pickLanguage(VirtuoMateController c, String code) {
+    if (c.locale.languageCode == code) return;
+    c.setLocale(code);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppText.tr(context, 'language_changed'))),
+      );
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final c = VirtuoMateScope.of(context);
-    final email = c.user?.email ?? AppText.tr(context, 'not_logged_in');
+    return ListenableBuilder(
+      listenable: VirtuoMateScope.of(context),
+      builder: (context, _) {
+        final c = VirtuoMateScope.of(context);
+        final email = c.user?.email ?? AppText.tr(context, 'not_logged_in');
+        final lang = c.locale.languageCode;
 
-    return MvpShell(
+        return MvpShell(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -49,17 +63,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Manage your neural interface preferences',
-                    style: TextStyle(color: VirtuoMvpColors.textMuted, fontSize: 12),
+                  Text(
+                    AppText.tr(context, 'manage_prefs'),
+                    style: const TextStyle(color: VirtuoMvpColors.textMuted, fontSize: 12),
                   ),
                   const SizedBox(height: 14),
-                  NeuralConnectivityCard(
-                    status: c.neuralConnectivity,
-                    onRefresh: () => c.refreshNeuralConnectivity(),
-                    refreshing: c.neuralRefreshInFlight,
+                  Text(
+                    AppText.tr(context, 'profile'),
+                    style: const TextStyle(
+                      color: VirtuoMvpColors.text,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 14,
+                    ),
                   ),
-                  const SizedBox(height: 14),
+                  const SizedBox(height: 8),
                   VCard(
                     padding: const EdgeInsets.all(16),
                     child: Column(
@@ -67,16 +84,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              width: 64,
-                              height: 64,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: VirtuoMvpColors.surface2,
-                                border: Border.all(color: const Color.fromRGBO(59, 231, 255, 0.25), width: 2),
-                              ),
-                              child: const Icon(Icons.person, color: VirtuoMvpColors.textMuted, size: 32),
-                            ),
+                            const ProfileAvatarThumbnail(size: 64, borderWidth: 2),
                             const SizedBox(width: 14),
                             Expanded(
                               child: Column(
@@ -101,9 +109,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   ),
                                   const SizedBox(height: 10),
                                   VButton(
-                                    title: 'Edit Profile',
+                                    title: AppText.tr(context, 'edit_profile'),
                                     variant: VButtonVariant.outline,
                                     onPressed: () => Navigator.pushNamed(context, AppRoutes.userConfig),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  VButton(
+                                    title: AppText.tr(context, 'change_photo'),
+                                    variant: VButtonVariant.ghost,
+                                    height: 36,
+                                    onPressed: () => Navigator.pushNamed(context, AppRoutes.avatar),
                                   ),
                                 ],
                               ),
@@ -122,19 +137,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             children: [
                               const Icon(Icons.workspace_premium_outlined, size: 16, color: VirtuoMvpColors.textMuted),
                               const SizedBox(width: 10),
-                              const Expanded(
+                              Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Plan',
-                                      style: TextStyle(
+                                      AppText.tr(context, 'plan'),
+                                      style: const TextStyle(
                                         color: VirtuoMvpColors.text,
                                         fontWeight: FontWeight.w900,
                                         fontSize: 12,
                                       ),
                                     ),
-                                    Text(
+                                    const Text(
                                       'Premium / Free — manage on Premium screen',
                                       style: TextStyle(
                                         color: VirtuoMvpColors.textMuted,
@@ -146,7 +161,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 ),
                               ),
                               VButton(
-                                title: 'Upgrade',
+                                title: AppText.tr(context, 'upgrade'),
                                 onPressed: () => Navigator.pushNamed(context, AppRoutes.premium),
                               ),
                             ],
@@ -154,6 +169,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ],
                     ),
+                  ),
+                  const SizedBox(height: 14),
+                  NeuralConnectivityCard(
+                    status: c.neuralConnectivity,
+                    onRefresh: () => c.refreshNeuralConnectivity(),
+                    refreshing: c.neuralRefreshInFlight,
                   ),
                   const SizedBox(height: 14),
                   VCard(
@@ -179,30 +200,48 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                         ),
                         const SizedBox(height: 8),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(VirtuoMvpRadii.lg),
-                            border: Border.all(color: VirtuoMvpColors.stroke),
-                            color: VirtuoMvpColors.inputFill,
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              isExpanded: true,
-                              value: c.locale.languageCode,
-                              dropdownColor: VirtuoMvpColors.bg1,
-                              style: const TextStyle(color: VirtuoMvpColors.text, fontSize: 13),
-                              items: const [
-                                DropdownMenuItem(value: 'en', child: Text('English')),
-                                DropdownMenuItem(value: 'ur', child: Text('Urdu')),
-                              ],
-                              onChanged: (value) {
-                                if (value != null) c.setLocale(value);
-                                setState(() {});
-                              },
+                        Row(
+                          children: [
+                            Expanded(
+                              child: _LanguageChip(
+                                label: AppText.tr(context, 'english'),
+                                selected: lang == 'en',
+                                onTap: () => _pickLanguage(c, 'en'),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: _LanguageChip(
+                                label: AppText.tr(context, 'urdu'),
+                                selected: lang == 'ur',
+                                onTap: () => _pickLanguage(c, 'ur'),
+                              ),
+                            ),
+                          ],
+                        ),
+                        if (AppText.isUrdu(c.locale)) ...[
+                          const SizedBox(height: 10),
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: VirtuoMvpColors.amber.withValues(alpha: 0.12),
+                              border: Border.all(
+                                color: VirtuoMvpColors.amber.withValues(alpha: 0.4),
+                              ),
+                            ),
+                            child: Text(
+                              AppText.tr(context, 'language_partial_note'),
+                              style: const TextStyle(
+                                color: VirtuoMvpColors.amber,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                height: 1.4,
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                         const SizedBox(height: 12),
                         _settingsToggle(
                           AppText.tr(context, 'high_contrast'),
@@ -396,6 +435,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ],
       ),
     );
+      },
+    );
   }
 
   Widget _settingsToggle(String title, String sub, bool value, ValueChanged<bool> onChanged) {
@@ -582,6 +623,52 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             const Icon(Icons.chevron_right, size: 16, color: VirtuoMvpColors.textFaint),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _LanguageChip extends StatelessWidget {
+  const _LanguageChip({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(VirtuoMvpRadii.lg),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 180),
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(VirtuoMvpRadii.lg),
+            color: selected
+                ? VirtuoMvpColors.cyan.withValues(alpha: 0.15)
+                : VirtuoMvpColors.inputFill,
+            border: Border.all(
+              color: selected ? VirtuoMvpColors.cyan : VirtuoMvpColors.stroke,
+              width: selected ? 1.5 : 1,
+            ),
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            label,
+            style: TextStyle(
+              color: selected ? VirtuoMvpColors.cyan : VirtuoMvpColors.text,
+              fontWeight: FontWeight.w800,
+              fontSize: 13,
+            ),
+          ),
         ),
       ),
     );

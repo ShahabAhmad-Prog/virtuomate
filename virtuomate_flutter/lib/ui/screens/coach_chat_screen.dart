@@ -68,18 +68,12 @@ class _CoachChatScreenState extends State<CoachChatScreen> {
     return ValueListenableBuilder<bool>(
       valueListenable: _ttsSpeaker.isSpeaking,
       builder: (context, speaking, _) {
-        return ValueListenableBuilder<double>(
-          valueListenable: _ttsSpeaker.mouthOpen,
-          builder: (context, mouth, _) {
-            return AvatarPresence(
-              selfieUrlOrPath: c.avatarImage,
-              useTemplate: c.avatarUseTemplate,
-              size: avatarSize,
-              isSpeaking: speaking || _typing,
-              mouthOpen: mouth,
-              emotion: emotion,
-            );
-          },
+        return AvatarPresence(
+          selfieUrlOrPath: c.avatarImage,
+          useTemplate: c.avatarUseTemplate,
+          size: avatarSize,
+          isSpeaking: speaking || _typing,
+          emotion: emotion,
         );
       },
     );
@@ -108,6 +102,7 @@ class _CoachChatScreenState extends State<CoachChatScreen> {
       }
     });
 
+    final c = VirtuoMateScope.of(context);
     try {
       await _chat?.addUserMessage(text);
     } catch (e) {
@@ -121,7 +116,6 @@ class _CoachChatScreenState extends State<CoachChatScreen> {
     }
     _scrollToBottom();
 
-    final c = VirtuoMateScope.of(context);
     final ok = await c.completeConversation(text);
     if (!mounted) return;
 
@@ -172,11 +166,7 @@ class _CoachChatScreenState extends State<CoachChatScreen> {
     _scrollToBottom();
 
     if (mounted && reply.trim().isNotEmpty) {
-      await _ttsSpeaker.speak(
-        reply,
-        c.voiceProfile,
-        voiceGender: c.voiceGender,
-      );
+      await _ttsSpeaker.speak(reply, c.encodedVoiceProfile);
     }
   }
 
@@ -220,7 +210,7 @@ class _CoachChatScreenState extends State<CoachChatScreen> {
     final c = VirtuoMateScope.of(context);
     final keyboardOpen = MediaQuery.viewInsetsOf(context).bottom > 0;
     final maxW = MediaQuery.sizeOf(context).width * 0.82;
-    final avatarSize = keyboardOpen ? 48.0 : 72.0;
+    final avatarSize = keyboardOpen ? 64.0 : 112.0;
 
     Widget buildList({
       required int messageCount,
@@ -253,29 +243,44 @@ class _CoachChatScreenState extends State<CoachChatScreen> {
         children: [
           const MvpTopBar(title: 'AI Coach Chat'),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: VirtuoMvpSpacing.lg),
-            child: _chat != null
-                ? StreamBuilder<List<ChatMessage>>(
-                    stream: _chat!.watchMessages(),
-                    builder: (context, snap) {
-                      final msgs = snap.data ?? const [];
-                      final emotion = msgs.isNotEmpty && !msgs.last.isUser
-                          ? (msgs.last.emotion ?? 'Focused')
-                          : 'Neutral';
-                      return _coachAvatar(
-                        c,
-                        emotion: emotion,
-                        avatarSize: avatarSize,
+            padding: EdgeInsets.fromLTRB(
+              VirtuoMvpSpacing.lg,
+              keyboardOpen ? 4 : 8,
+              VirtuoMvpSpacing.lg,
+              4,
+            ),
+            child: Center(
+              child: ListenableBuilder(
+                listenable: c,
+                builder: (context, _) {
+                  Widget avatar({required String emotion}) => Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        child: _coachAvatar(
+                          c,
+                          emotion: emotion,
+                          avatarSize: avatarSize,
+                        ),
                       );
-                    },
-                  )
-                : _coachAvatar(
-                    c,
-                    avatarSize: avatarSize,
+                  if (_chat != null) {
+                    return StreamBuilder<List<ChatMessage>>(
+                      stream: _chat!.watchMessages(),
+                      builder: (context, snap) {
+                        final msgs = snap.data ?? const [];
+                        final emotion = msgs.isNotEmpty && !msgs.last.isUser
+                            ? (msgs.last.emotion ?? 'Focused')
+                            : 'Neutral';
+                        return avatar(emotion: emotion);
+                      },
+                    );
+                  }
+                  return avatar(
                     emotion: _localMessages.isNotEmpty && !_localMessages.last.isUser
                         ? (_localMessages.last.emotion ?? 'neutral')
                         : c.avatarEmotionState,
-                  ),
+                  );
+                },
+              ),
+            ),
           ),
           SizedBox(height: keyboardOpen ? 4 : 8),
           if (_coachStatusBanner.isNotEmpty)

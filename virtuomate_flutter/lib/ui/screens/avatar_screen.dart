@@ -91,6 +91,17 @@ class _AvatarScreenState extends State<AvatarScreen> {
     _voiceGender = resolved.gender;
   }
 
+  void _persistAvatarConfig(VirtuoMateController c) {
+    c.saveAvatarStyle(_selected);
+    c.saveAvatarEmotionState(_previewEmotion.name);
+    c.saveVoiceProfile(encodeVoiceProfile(_voiceGender, _voiceSelected));
+    c.saveVoiceGender(_voiceGender);
+    c.saveAvatarUseTemplate(_useTemplate);
+    if (!_useTemplate && _imagePathOrUrl.isNotEmpty) {
+      c.saveAvatarImage(_imagePathOrUrl);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final c = VirtuoMateScope.of(context);
@@ -101,7 +112,13 @@ class _AvatarScreenState extends State<AvatarScreen> {
           MvpTopBar(
             title: 'Avatar Builder',
             right: TextButton(
-              onPressed: () => Navigator.maybePop(context),
+              onPressed: () {
+                _persistAvatarConfig(c);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Avatar & voice saved')),
+                );
+                Navigator.maybePop(context);
+              },
               child: const Text(
                 'Save',
                 style: TextStyle(
@@ -257,6 +274,7 @@ class _AvatarScreenState extends State<AvatarScreen> {
                         }),
                         const SizedBox(height: 12),
                         _genderToneSection(
+                          c,
                           title: 'Male coach tones',
                           subtitle:
                               'Deeper voice · requires Google TTS male pack on device (Settings → Text-to-speech)',
@@ -277,6 +295,7 @@ class _AvatarScreenState extends State<AvatarScreen> {
                         ],
                         const SizedBox(height: 16),
                         _genderToneSection(
+                          c,
                           title: 'Female coach tones',
                           subtitle: 'Warmer voice · encouragement, calm practice, empathy',
                           gender: kVoiceGenderFemale,
@@ -312,9 +331,6 @@ class _AvatarScreenState extends State<AvatarScreen> {
                             size: 140,
                             emotion: _previewEmotion.name,
                             isSpeaking: _previewEmotion == AvatarEmotionState.speaking,
-                            mouthOpen: _previewEmotion == AvatarEmotionState.speaking
-                                ? 0.75
-                                : 0,
                             isListening:
                                 _previewEmotion == AvatarEmotionState.listening,
                           ),
@@ -396,9 +412,13 @@ class _AvatarScreenState extends State<AvatarScreen> {
                               expanded: true,
                               onPressed: (_generatingVroid || _uploading || _stylizingOnDevice)
                                   ? null
-                                  : (!_hasPortraitSource()
-                                      ? null
-                                      : () => _generateStyledAvatar('cartoon')),
+                                  : () {
+                                      if (!_hasPortraitSource()) {
+                                        _onCreateVroidDisabledTap(context);
+                                        return;
+                                      }
+                                      _generateStyledAvatar('cartoon');
+                                    },
                             )
                           else
                             VButton(
@@ -410,9 +430,13 @@ class _AvatarScreenState extends State<AvatarScreen> {
                               expanded: true,
                               onPressed: (_generatingVroid || _uploading || _stylizingOnDevice)
                                   ? null
-                                  : (!_hasPortraitSource()
-                                      ? null
-                                      : _createOnDeviceAvatar),
+                                  : () {
+                                      if (!_hasPortraitSource()) {
+                                        _onCreateVroidDisabledTap(context);
+                                        return;
+                                      }
+                                      _createOnDeviceAvatar();
+                                    },
                             ),
                           if (AppConfig.useBackendApi) ...[
                             const SizedBox(height: 8),
@@ -425,9 +449,13 @@ class _AvatarScreenState extends State<AvatarScreen> {
                               expanded: true,
                               onPressed: (_generatingVroid || _uploading || _stylizingOnDevice)
                                   ? null
-                                  : (!_hasPortraitSource()
-                                      ? null
-                                      : _createOnDeviceAvatar),
+                                  : () {
+                                      if (!_hasPortraitSource()) {
+                                        _onCreateVroidDisabledTap(context);
+                                        return;
+                                      }
+                                      _createOnDeviceAvatar();
+                                    },
                             ),
                           ],
                         ],
@@ -535,19 +563,10 @@ class _AvatarScreenState extends State<AvatarScreen> {
                           icon: Icons.flash_on,
                           expanded: true,
                           onPressed: () {
-                            c.saveAvatarStyle(_selected);
-                            c.saveAvatarUseTemplate(_useTemplate);
-                            c.saveAvatarEmotionState(_previewEmotion.name);
-                            c.saveVoiceProfile(
-                              encodeVoiceProfile(_voiceGender, _voiceSelected),
-                            );
-                            c.saveVoiceGender(_voiceGender);
-                            if (_imagePathOrUrl.isNotEmpty) {
-                              c.saveAvatarImage(_imagePathOrUrl);
-                            }
+                            _persistAvatarConfig(c);
                             showAchievementUnlocks(context, c.drainAchievementUnlocks());
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Avatar saved')),
+                              const SnackBar(content: Text('Avatar & voice saved')),
                             );
                           },
                         ),
@@ -563,7 +582,8 @@ class _AvatarScreenState extends State<AvatarScreen> {
     );
   }
 
-  Widget _genderToneSection({
+  Widget _genderToneSection(
+    VirtuoMateController c, {
     required String title,
     required String subtitle,
     required String gender,
@@ -608,10 +628,14 @@ class _AvatarScreenState extends State<AvatarScreen> {
           tones: coachTonesForGender(gender),
           selectedId: activeGender ? _voiceSelected : '',
           previewingId: _previewingToneId,
-          onSelected: (id) => setState(() {
-            _voiceGender = gender;
-            _voiceSelected = id;
-          }),
+          onSelected: (id) {
+            setState(() {
+              _voiceGender = gender;
+              _voiceSelected = id;
+            });
+            c.saveVoiceProfile(encodeVoiceProfile(gender, id));
+            c.saveVoiceGender(gender);
+          },
           onPreview: (tone) => _previewTone(tone, gender),
         ),
       ],
@@ -707,6 +731,7 @@ class _AvatarScreenState extends State<AvatarScreen> {
       _uploadNote = 'Uploading original photo…';
     });
     c.saveAvatarImage(localPath);
+    c.saveAvatarUseTemplate(false);
 
     try {
       final url = await c.uploadAvatarImage(File(localPath));

@@ -178,6 +178,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
   }
 
   Future<void> _submit() async {
+    final c = VirtuoMateScope.of(context);
     final answer = await _answerTextForSubmit();
     if (answer.isEmpty) {
       setState(() {
@@ -193,7 +194,6 @@ class _InterviewScreenState extends State<InterviewScreen> {
       });
       return;
     }
-    final c = VirtuoMateScope.of(context);
     if (c.user == null) {
       setState(() => _error = 'Please sign in to use interview coaching.');
       return;
@@ -219,7 +219,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
           ? 'Final score from Intelligence Engine (saved with session).'
           : 'Score from coach session.';
     });
-    await applyVoiceProfileToTts(_tts, c.voiceProfile, voiceGender: c.voiceGender);
+    await applyVoiceProfileToTts(_tts, c.encodedVoiceProfile);
     await _tts.speak(session?.feedback ?? c.latestFeedback);
     if (_step < kInterviewSteps.length - 1) {
       setState(() {

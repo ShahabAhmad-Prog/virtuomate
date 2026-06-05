@@ -105,7 +105,7 @@ class ApiClient {
         final errJson = jsonDecode(response.body) as Map<String, dynamic>;
         final code = errJson['code']?.toString();
         final errText = errJson['error']?.toString() ?? 'API request failed (${response.statusCode}).';
-        final detail = errJson['detail']?.toString()?.trim();
+        final detail = errJson['detail']?.toString().trim();
         final fullErr = (detail != null && detail.isNotEmpty) ? '$errText: $detail' : errText;
         if (response.statusCode == 401) {
           throw Exception('Please sign in again to use cloud features.');

@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'dart:async' show unawaited;
+
 import 'package:flutter/material.dart';
 import 'package:virtuomate_flutter/config/app_config.dart';
 import 'package:virtuomate_flutter/config/demo_account_config.dart';
@@ -15,6 +17,7 @@ import 'package:virtuomate_flutter/services/on_device_avatar_stylizer.dart';
 import 'package:virtuomate_flutter/services/storage_service.dart';
 import 'package:virtuomate_flutter/services/video_cv_export_service.dart';
 import 'package:virtuomate_flutter/services/cloud_download_service.dart';
+import 'package:virtuomate_flutter/services/locale_storage.dart';
 import 'package:virtuomate_flutter/services/video_cv_render_service.dart';
 
 class VirtuoMateController extends ChangeNotifier {
@@ -22,6 +25,7 @@ class VirtuoMateController extends ChangeNotifier {
     required AppService service,
     this.firebaseAuthReady = false,
     this.bootstrapWarning,
+    String? initialLanguageCode,
     this.adminApi,
     this.storage,
     this.videoCvRender,
@@ -29,7 +33,12 @@ class VirtuoMateController extends ChangeNotifier {
     Future<bool> Function()? onDeleteAccount,
   }) : _service = service,
        _onExportData = onExportData,
-       _onDeleteAccount = onDeleteAccount;
+       _onDeleteAccount = onDeleteAccount {
+    if (initialLanguageCode == 'ur' || initialLanguageCode == 'en') {
+      _userLocaleOverride = initialLanguageCode;
+      _locale = Locale(initialLanguageCode!);
+    }
+  }
 
   final AppService _service;
   final bool firebaseAuthReady;
@@ -41,6 +50,7 @@ class VirtuoMateController extends ChangeNotifier {
   final Future<bool> Function()? _onDeleteAccount;
   String errorMessage = '';
   Locale _locale = const Locale('en');
+  String? _userLocaleOverride;
   double _textScale = 1.0;
   bool _highContrast = false;
 
@@ -61,6 +71,10 @@ class VirtuoMateController extends ChangeNotifier {
       );
 
   String get voiceToneId => resolvedVoice.toneId;
+
+  /// Encoded `gender|toneId` — use for TTS and cloud Video CV render.
+  String get encodedVoiceProfile =>
+      encodeVoiceProfile(resolvedVoice.gender, resolvedVoice.toneId);
   String get latestFeedback => _service.latestFeedback();
   String get lastCoachProvider => _service.lastCoachProvider;
   String get lastCoachHint => _service.lastCoachHint;
@@ -121,7 +135,7 @@ class VirtuoMateController extends ChangeNotifier {
       await _service.bootstrapUserProfile(
         displayName: _service.displayName().isNotEmpty ? _service.displayName() : null,
       );
-      applyStoredPreferences();
+      await loadLocaleFromDevice();
       if (!AppConfig.useBackendApi) {
         startRealtimeSync();
       }
@@ -141,7 +155,7 @@ class VirtuoMateController extends ChangeNotifier {
       await _service.bootstrapUserProfile(
         displayName: DemoAccountConfig.displayName,
       );
-      applyStoredPreferences();
+      await loadLocaleFromDevice();
       if (!AppConfig.useBackendApi) {
         startRealtimeSync();
       }
@@ -159,7 +173,7 @@ class VirtuoMateController extends ChangeNotifier {
       errorMessage = '';
       await _service.signInWithEmail(email: email, password: password);
       await _service.bootstrapUserProfile();
-      applyStoredPreferences();
+      await loadLocaleFromDevice();
       notifyListeners();
       return true;
     } catch (e) {
@@ -180,7 +194,7 @@ class VirtuoMateController extends ChangeNotifier {
       await _service.bootstrapUserProfile(
         displayName: displayName.isNotEmpty ? displayName : null,
       );
-      applyStoredPreferences();
+      await loadLocaleFromDevice();
       notifyListeners();
       return true;
     } catch (e) {
@@ -473,23 +487,33 @@ class VirtuoMateController extends ChangeNotifier {
 
   void applyStoredPreferences() {
     final p = _service.loadPreferences();
-    _locale = Locale(p.languageCode);
+    final code = _userLocaleOverride ?? p.languageCode;
+    _locale = Locale(code == 'ur' ? 'ur' : 'en');
     _textScale = p.textScale.clamp(0.9, 1.4);
     _highContrast = p.highContrast;
     notifyListeners();
   }
 
+  Future<void> loadLocaleFromDevice() async {
+    _userLocaleOverride = await LocaleStorage.read();
+    applyStoredPreferences();
+  }
+
   void _persistPreferences(AppPreferences p) {
     _service.savePreferences(p);
-    _locale = Locale(p.languageCode);
+    final code = _userLocaleOverride ?? p.languageCode;
+    _locale = Locale(code == 'ur' ? 'ur' : 'en');
     _textScale = p.textScale;
     _highContrast = p.highContrast;
     notifyListeners();
   }
 
   void setLocale(String languageCode) {
+    final code = languageCode == 'ur' ? 'ur' : 'en';
+    _userLocaleOverride = code;
+    unawaited(LocaleStorage.write(code));
     _persistPreferences(
-      _service.loadPreferences().copyWith(languageCode: languageCode),
+      _service.loadPreferences().copyWith(languageCode: code),
     );
   }
 
@@ -582,6 +606,8 @@ class VirtuoMateController extends ChangeNotifier {
         draft: videoCvDraft,
         format: videoCvDraft.exportFormat == 'webm' ? 'webm' : 'mp4',
         avatarImageUrl: avatarUseTemplate ? '' : avatarUrl,
+        voiceProfile: encodedVoiceProfile,
+        voiceGender: resolvedVoice.gender,
       );
       final videoUrl = job.videoDownloadUrl;
       if (videoUrl == null || videoUrl.isEmpty) {

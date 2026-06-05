@@ -62,7 +62,8 @@ class ApiAppRepository implements AppRepository {
     _videoCvCount = (profile['videoCvCount'] as num?)?.toInt() ?? 0;
     _missionProgress = (profile['missionProgress'] as num?)?.toInt() ?? 65;
     _isPremium = (profile['isPremium'] as bool?) ?? false;
-    _preferences = AppPreferences.fromJson(
+    _preferences = AppPreferences.mergeFromJson(
+      _preferences,
       profile['preferences'] as Map<String, dynamic>?,
     );
     final draft = profile['videoCvDraft'] as Map<String, dynamic>?;

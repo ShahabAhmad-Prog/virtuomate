@@ -2,6 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:virtuomate_flutter/ui/virtuomate_scope.dart';
 
 class AppText {
+  static const String languageEnglish = 'en';
+  static const String languageUrdu = 'ur';
+
+  /// Urdu is partially translated; keep LTR shell so mixed EN/UR layouts stay stable.
+  static bool isUrdu(Locale locale) => locale.languageCode == languageUrdu;
+
+  static TextDirection textDirectionFor(Locale locale) => TextDirection.ltr;
+
   static const Map<String, Map<String, String>> _strings = {
     'en': {
       'app_name': 'VirtuoMate',
@@ -32,6 +40,17 @@ class AppText {
       'confirm': 'Confirm',
       'welcome_subtitle':
           'SRS aligned Flutter frontend for coaching, avatar, and video CV modules.',
+      'language_partial_note':
+          'Urdu translation is partial. Coaching, voice, and Video CV stay in English for now.',
+      'language_changed': 'Language updated',
+      'profile': 'Profile',
+      'edit_profile': 'Edit Profile',
+      'change_photo': 'Change Photo',
+      'manage_prefs': 'Manage your neural interface preferences',
+      'english': 'English',
+      'urdu': 'Urdu',
+      'plan': 'Plan',
+      'upgrade': 'Upgrade',
     },
     'ur': {
       'app_name': 'ورچو میٹ',
@@ -62,6 +81,17 @@ class AppText {
       'confirm': 'تصدیق',
       'welcome_subtitle':
           'ایس آر ایس کے مطابق کوچنگ، اوتار اور ویڈیو سی وی ماڈیولز کے لیے فلٹر فرنٹ اینڈ۔',
+      'language_partial_note':
+          'اردو ترجمہ جزوی ہے۔ کوچنگ، آواز اور ویڈیو سی وی فی الحال انگریزی میں ہیں۔',
+      'language_changed': 'زبان اپڈیٹ ہو گئی',
+      'profile': 'پروفائل',
+      'edit_profile': 'پروفائل میں ترمیم',
+      'change_photo': 'تصویر بدلیں',
+      'manage_prefs': 'اپنی ترجیحات منظم کریں',
+      'english': 'English',
+      'urdu': 'اردو',
+      'plan': 'پلان',
+      'upgrade': 'اپ گریڈ',
     },
   };
 

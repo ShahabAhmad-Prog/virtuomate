@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:virtuomate_flutter/ui/shared/avatar_coach_view.dart';
 
-/// Coach avatar with emotion animations (Layer 2) and TTS lip-sync (Layer 3).
+/// Coach avatar with emotion animations.
 class AvatarPresence extends StatelessWidget {
   const AvatarPresence({
     super.key,
@@ -11,7 +11,6 @@ class AvatarPresence extends StatelessWidget {
     this.size = 120,
     this.isSpeaking = false,
     this.isListening = false,
-    this.mouthOpen = 0,
     this.enableRiveOverlay = false,
   });
 
@@ -21,7 +20,6 @@ class AvatarPresence extends StatelessWidget {
   final double size;
   final bool isSpeaking;
   final bool isListening;
-  final double mouthOpen;
   final bool enableRiveOverlay;
 
   @override
@@ -33,7 +31,6 @@ class AvatarPresence extends StatelessWidget {
       size: size,
       isSpeaking: isSpeaking,
       isListening: isListening,
-      mouthOpen: mouthOpen,
       enableRiveOverlay: enableRiveOverlay,
     );
   }

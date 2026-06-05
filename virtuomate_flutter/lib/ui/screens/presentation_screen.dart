@@ -242,13 +242,13 @@ class _PresentationScreenState extends State<PresentationScreen> {
 
       setState(() => _slide++);
 
-      await applyVoiceProfileToTts(_tts, c.voiceProfile, voiceGender: c.voiceGender);
+      await applyVoiceProfileToTts(_tts, c.encodedVoiceProfile);
 
       await _tts.speak('Next slide: ${_slideTitles[_slide]}. ${_prompts[_slide]}');
 
     } else {
 
-      await applyVoiceProfileToTts(_tts, c.voiceProfile, voiceGender: c.voiceGender);
+      await applyVoiceProfileToTts(_tts, c.encodedVoiceProfile);
 
       await _tts.speak('Presentation complete. Great work.');
 

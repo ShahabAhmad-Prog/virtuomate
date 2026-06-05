@@ -9,6 +9,7 @@ const ffmpegPath = require('ffmpeg-static');
 const gTTS = require('gtts');
 const lipSync = require('./audio_lipsync');
 const layout = require('./video_cv_layout');
+const { narrationAudioFilters } = require('./voice_tuning');
 
 const writeFile = promisify(fs.writeFile);
 const rm = promisify(fs.rm);
@@ -71,13 +72,28 @@ function sanitizeText(s, maxLen = 800) {
     .slice(0, maxLen);
 }
 
-async function synthesizeSpeechMp3(text, outPath) {
+async function synthesizeSpeechMp3(text, outPath, { voiceProfile, voiceGender } = {}) {
   const chunk = sanitizeText(text, 3500);
   if (!chunk) throw new Error('Empty narration script');
+  const rawPath = outPath.replace(/\.mp3$/i, '.raw.mp3');
   await new Promise((resolve, reject) => {
     const tts = new gTTS(chunk, 'en');
-    tts.save(outPath, (err) => (err ? reject(new Error(`TTS failed: ${err.message || err}`)) : resolve()));
+    tts.save(rawPath, (err) => (err ? reject(new Error(`TTS failed: ${err.message || err}`)) : resolve()));
   });
+  try {
+    const filter = narrationAudioFilters(voiceProfile, voiceGender);
+    await execFfmpeg(['-y', '-i', rawPath, '-filter:a', filter, outPath]);
+  } catch (err) {
+    await copyFile(rawPath, outPath);
+    // eslint-disable-next-line no-console
+    console.warn('Voice tuning filter failed, using default gTTS audio:', err.message || err);
+  } finally {
+    try {
+      await rm(rawPath, { force: true });
+    } catch (_) {
+      /* ignore */
+    }
+  }
 }
 
 function execFfmpeg(args) {
@@ -445,7 +461,7 @@ async function renderSlideVideoWithAvatar({
  * Optional cartoon avatar overlay. Falls back to minimal slide+audio if filters fail.
  * @returns {Promise<string>} path to output video file
  */
-async function renderVideoCv({ script, draft, format = 'mp4' }) {
+async function renderVideoCv({ script, draft, format = 'mp4', voiceProfile, voiceGender }) {
   const workDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'virtuomate-cv-'));
   const audioPath = path.join(workDir, 'narration.mp3');
   const titlePath = path.join(workDir, 'title.txt');
@@ -463,7 +479,7 @@ async function renderVideoCv({ script, draft, format = 'mp4' }) {
     await writeFile(headlinePath, headline, 'utf8');
     await writeFile(scriptPath, body, 'utf8');
 
-    await synthesizeSpeechMp3(script, audioPath);
+    await synthesizeSpeechMp3(script, audioPath, { voiceProfile, voiceGender });
     const duration = await probeDurationSeconds(audioPath);
 
     const fontEsc = staged.fontPath ? escapeDrawtextPath(staged.fontPath) : '';

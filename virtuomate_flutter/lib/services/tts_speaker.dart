@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:virtuomate_flutter/core/avatar_customization.dart';
 import 'package:virtuomate_flutter/core/voice_profile_codec.dart';
-import 'package:virtuomate_flutter/services/tts_lip_sync.dart';
 import 'package:virtuomate_flutter/services/tts_voice_picker.dart';
 
 Future<void> applyVoiceProfileToTts(
@@ -15,22 +14,25 @@ Future<void> applyVoiceProfileToTts(
   final rate = tone?.speechRate ?? 0.45;
   final pitch = pitchForGender(tone?.pitch ?? 1.0, resolved.gender);
 
-  await applySystemVoiceForGender(tts, resolved.gender);
   await tts.setSpeechRate(rate);
   await tts.setPitch(pitch);
+  // Apply system voice last — some engines reset voice when pitch/rate change.
+  await applySystemVoiceForGender(tts, resolved.gender);
 }
 
-/// Speaks text; exposes [isSpeaking] and [mouthOpen] for avatar lip-sync (Layer 3).
+/// Speaks text and exposes [isSpeaking] for avatar emotion states.
 class TtsSpeaker {
   TtsSpeaker(this._tts) {
-    _lipSync.attach(_tts, isSpeaking: isSpeaking, mouthOpen: mouthOpen);
+    _tts.setStartHandler(() => isSpeaking.value = true);
+    _tts.setCompletionHandler(() => isSpeaking.value = false);
+    _tts.setCancelHandler(() => isSpeaking.value = false);
+    _tts.setProgressHandler((String text, int start, int end, String word) {
+      if (!isSpeaking.value) isSpeaking.value = true;
+    });
   }
 
   final FlutterTts _tts;
-  final TtsLipSync _lipSync = TtsLipSync();
-
   final ValueNotifier<bool> isSpeaking = ValueNotifier(false);
-  final ValueNotifier<double> mouthOpen = ValueNotifier(0);
 
   Future<void> speak(
     String text,
@@ -38,10 +40,10 @@ class TtsSpeaker {
     String? voiceGender,
   }) async {
     if (text.trim().isEmpty) return;
+    final resolved = resolveVoiceProfile(voiceProfile, fallbackGender: voiceGender);
     await applyVoiceProfileToTts(
       _tts,
-      voiceProfile,
-      voiceGender: voiceGender,
+      encodeVoiceProfile(resolved.gender, resolved.toneId),
     );
     await _tts.speak(text);
   }
@@ -49,12 +51,9 @@ class TtsSpeaker {
   Future<void> stop() async {
     await _tts.stop();
     isSpeaking.value = false;
-    mouthOpen.value = 0;
   }
 
   void dispose() {
-    _lipSync.dispose();
     isSpeaking.dispose();
-    mouthOpen.dispose();
   }
 }

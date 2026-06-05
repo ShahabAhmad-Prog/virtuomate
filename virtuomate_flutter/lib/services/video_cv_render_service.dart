@@ -33,12 +33,16 @@ class VideoCvRenderService {
     required VideoCvDraft draft,
     String format = 'mp4',
     String avatarImageUrl = '',
+    String voiceProfile = 'confident-neutral',
+    String voiceGender = 'female',
   }) async {
     final res = await _api.postJson(
       '/video-cv/render-job',
       {
         'script': script,
         'format': format,
+        'voiceProfile': voiceProfile,
+        'voiceGender': voiceGender,
         'draft': {
           'fullName': draft.fullName,
           'headline': draft.headline,

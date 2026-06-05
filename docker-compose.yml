@@ -1,0 +1,18 @@
+# Local development stack for VirtuoMate
+# Requires: Firebase service account JSON at ./service-account.json
+services:
+  virtuomate-api:
+    build:
+      context: ./virtuomate_backend_firebase
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/service-account.json
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - PAYMENT_MODE=mock
+      - CORS_ORIGIN=*
+    volumes:
+      - ./service-account.json:/app/service-account.json:ro
+    restart: unless-stopped

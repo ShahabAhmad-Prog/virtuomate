@@ -207,18 +207,27 @@ class AppPreferences {
 
   static AppPreferences fromJson(Map<String, dynamic>? json) {
     if (json == null) return const AppPreferences();
+    return mergeFromJson(const AppPreferences(), json);
+  }
+
+  /// Keeps local values when the server omits fields (avoids resetting language to English).
+  static AppPreferences mergeFromJson(
+    AppPreferences current,
+    Map<String, dynamic>? json,
+  ) {
+    if (json == null || json.isEmpty) return current;
     final rawIds = json['unlockedAchievementIds'];
     final ids = rawIds is List
         ? rawIds.map((e) => e.toString()).where((e) => e.isNotEmpty).toList()
-        : <String>[];
-    return AppPreferences(
-      emailNotifications: json['emailNotifications'] as bool? ?? true,
-      pushNotifications: json['pushNotifications'] as bool? ?? true,
-      sessionReminders: json['sessionReminders'] as bool? ?? true,
-      achievementAlerts: json['achievementAlerts'] as bool? ?? true,
-      languageCode: json['languageCode'] as String? ?? 'en',
-      textScale: (json['textScale'] as num?)?.toDouble() ?? 1.0,
-      highContrast: json['highContrast'] as bool? ?? false,
+        : null;
+    return current.copyWith(
+      emailNotifications: json['emailNotifications'] as bool?,
+      pushNotifications: json['pushNotifications'] as bool?,
+      sessionReminders: json['sessionReminders'] as bool?,
+      achievementAlerts: json['achievementAlerts'] as bool?,
+      languageCode: json['languageCode'] as String?,
+      textScale: (json['textScale'] as num?)?.toDouble(),
+      highContrast: json['highContrast'] as bool?,
       unlockedAchievementIds: ids,
     );
   }

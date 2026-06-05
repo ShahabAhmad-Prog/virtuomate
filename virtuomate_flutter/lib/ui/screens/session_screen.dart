@@ -41,7 +41,7 @@ class _SessionScreenState extends State<SessionScreen> {
   }
 
   Future<void> _speakWithProfile(VirtuoMateController c, String text) async {
-    await _ttsSpeaker.speak(text, c.voiceProfile, voiceGender: c.voiceGender);
+    await _ttsSpeaker.speak(text, c.encodedVoiceProfile);
   }
 
   Future<void> _processLiveTurn(VirtuoMateController c, String words) async {
@@ -181,20 +181,14 @@ class _SessionScreenState extends State<SessionScreen> {
                         ValueListenableBuilder<bool>(
                           valueListenable: _ttsSpeaker.isSpeaking,
                           builder: (context, speaking, _) {
-                            return ValueListenableBuilder<double>(
-                              valueListenable: _ttsSpeaker.mouthOpen,
-                              builder: (context, mouth, _) {
-                                return AvatarPresence(
-                                  selfieUrlOrPath: c.avatarImage,
-                                  useTemplate: c.avatarUseTemplate,
-                                  size: 128,
-                                  isSpeaking: speaking,
-                                  mouthOpen: mouth,
-                                  isListening: _isListening,
-                                  emotion: c.latestSessionRecord?.emotion ??
-                                      c.avatarEmotionState,
-                                );
-                              },
+                            return AvatarPresence(
+                              selfieUrlOrPath: c.avatarImage,
+                              useTemplate: c.avatarUseTemplate,
+                              size: 128,
+                              isSpeaking: speaking,
+                              isListening: _isListening,
+                              emotion: c.latestSessionRecord?.emotion ??
+                                  c.avatarEmotionState,
                             );
                           },
                         ),
@@ -253,7 +247,7 @@ class _SessionScreenState extends State<SessionScreen> {
                     expanded: true,
                     onPressed: () async {
                       final ok = await c.completeConversation(_input.text);
-                      if (!mounted) return;
+                      if (!context.mounted) return;
                       setState(() => _error = ok ? '' : c.errorMessage);
                       if (!ok) {
                         ScaffoldMessenger.of(context).showSnackBar(
