@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VirtuoMate — FYP Open House Poster 24×60</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg0: #09051a;
+      --bg1: #140a2a;
+      --bg2: #1b0b3a;
+      --text: #eaf0ff;
+      --muted: rgba(234, 240, 255, 0.72);
+      --faint: rgba(234, 240, 255, 0.55);
+      --cyan: #3be7ff;
+      --purple: #8b5cff;
+      --green: #3cffb2;
+      --surface: rgba(255, 255, 255, 0.06);
+      --stroke: rgba(255, 255, 255, 0.14);
+      --pad-x: 1in;
+      --pad-y: 1.25in;
+    }
+
+    @page {
+      size: 24in 60in;
+      margin: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #111;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+    }
+
+    .poster {
+      width: 24in;
+      height: 60in;
+      position: relative;
+      overflow: hidden;
+      font-family: "Inter", system-ui, sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 42%, var(--bg2) 100%);
+    }
+
+    .poster::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.03);
+      pointer-events: none;
+    }
+
+    .glow {
+      position: absolute;
+      width: 14in;
+      height: 14in;
+      left: 50%;
+      top: 22in;
+      transform: translateX(-50%);
+      background: radial-gradient(circle, rgba(139, 92, 255, 0.35) 0%, transparent 68%);
+      pointer-events: none;
+    }
+
+    .inner {
+      position: relative;
+      z-index: 1;
+      padding: var(--pad-y) var(--pad-x);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85in;
+    }
+
+    /* Header */
+    .header {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: start;
+      gap: 0.35in;
+    }
+
+    .ucp {
+      font-size: 20pt;
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--muted);
+    }
+
+    .ucp strong {
+      display: block;
+      color: var(--text);
+      font-size: 22pt;
+      font-weight: 800;
+    }
+
+    .pill {
+      justify-self: center;
+      padding: 0.12in 0.35in;
+      border-radius: 999px;
+      border: 1px solid rgba(59, 231, 255, 0.35);
+      background: rgba(59, 231, 255, 0.1);
+      color: var(--cyan);
+      font-size: 18pt;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .qr-top {
+      justify-self: end;
+      text-align: center;
+    }
+
+    .qr-top img, .qr-block img {
+      width: 1.65in;
+      height: 1.65in;
+      border-radius: 0.12in;
+      border: 2px solid var(--stroke);
+      background: var(--bg0);
+    }
+
+    .qr-label {
+      font-size: 16pt;
+      font-weight: 700;
+      color: var(--faint);
+      margin-top: 0.08in;
+      letter-spacing: 0.08em;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+    }
+
+    .eyebrow {
+      font-size: 24pt;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      color: var(--cyan);
+      text-transform: uppercase;
+      margin-bottom: 0.2in;
+    }
+
+    .title {
+      font-size: 148pt;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      line-height: 0.92;
+      margin: 0;
+      text-shadow: 0 0 80px rgba(139, 92, 255, 0.45);
+    }
+
+    .promise {
+      font-size: 46pt;
+      font-weight: 600;
+      line-height: 1.2;
+      color: var(--muted);
+      max-width: 20in;
+      margin: 0.35in auto 0;
+    }
+
+    .logo-mark {
+      width: 1.4in;
+      height: 1.4in;
+      margin: 0.4in auto 0;
+      border-radius: 50%;
+      border: 2px solid var(--stroke);
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow: 0 0 40px rgba(59, 231, 255, 0.2);
+    }
+
+    .logo-mark svg {
+      width: 0.65in;
+      height: 0.65in;
+    }
+
+    .logo-dot {
+      position: absolute;
+      right: 0.22in;
+      bottom: 0.18in;
+      width: 0.14in;
+      height: 0.14in;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    /* Phones */
+    .phones-hero {
+      display: flex;
+      justify-content: center;
+      margin-top: -0.2in;
+    }
+
+    .phone {
+      background: #0c0818;
+      border-radius: 0.45in;
+      border: 3px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 0 0 1px rgba(59, 231, 255, 0.15), 0 24px 80px rgba(0, 0, 0, 0.55), 0 0 60px rgba(139, 92, 255, 0.25);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .phone-lg {
+      width: 9.2in;
+      height: 16.5in;
+    }
+
+    .phone-sm {
+      width: 4.4in;
+      height: 7.8in;
+    }
+
+    .phone-notch {
+      width: 35%;
+      height: 0.22in;
+      background: #000;
+      border-radius: 0 0 0.12in 0.12in;
+      margin: 0.12in auto 0;
+    }
+
+    .screen {
+      padding: 0.28in 0.32in 0.35in;
+      height: calc(100% - 0.34in);
+      background: linear-gradient(180deg, var(--bg0), var(--bg2));
+      font-size: 11pt;
+    }
+
+    .phone-lg .screen {
+      font-size: 17pt;
+    }
+
+    .screen-label {
+      text-align: center;
+      font-size: 22pt;
+      font-weight: 800;
+      color: var(--faint);
+      margin-top: 0.15in;
+      letter-spacing: 0.02em;
+    }
+
+    .phones-row {
+      display: flex;
+      justify-content: center;
+      gap: 0.65in;
+    }
+
+    /* Screen UI components */
+    .s-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.2in;
+    }
+
+    .s-system {
+      color: var(--cyan);
+      font-weight: 900;
+      font-size: 0.85em;
+      letter-spacing: 0.1em;
+    }
+
+    .s-name {
+      font-weight: 900;
+      font-size: 1.15em;
+    }
+
+    .s-card {
+      background: var(--surface);
+      border: 1px solid var(--stroke);
+      border-radius: 0.22in;
+      padding: 0.22in;
+      margin-bottom: 0.18in;
+    }
+
+    .s-btn {
+      display: block;
+      text-align: center;
+      background: var(--purple);
+      color: #0b0720;
+      font-weight: 800;
+      padding: 0.14in;
+      border-radius: 0.18in;
+      margin-top: 0.15in;
+      font-size: 0.95em;
+    }
+
+    .s-ghost {
+      background: var(--surface);
+      border: 1px solid var(--stroke);
+      color: var(--text);
+      padding: 0.12in;
+      border-radius: 0.16in;
+      margin-bottom: 0.1in;
+      font-weight: 700;
+      font-size: 0.88em;
+    }
+
+    .s-cyan {
+      color: var(--cyan);
+      font-weight: 800;
+      font-size: 0.82em;
+    }
+
+    .s-avatar {
+      width: 2.2in;
+      height: 2.2in;
+      border-radius: 50%;
+      border: 2px solid rgba(59, 231, 255, 0.35);
+      background: var(--surface);
+      margin: 0.2in auto;
+    }
+
+    .phone-lg .s-avatar {
+      width: 3.2in;
+      height: 3.2in;
+    }
+
+    .s-pill {
+      display: inline-block;
+      padding: 0.06in 0.2in;
+      border-radius: 999px;
+      background: rgba(139, 92, 255, 0.35);
+      border: 1px solid var(--stroke);
+      font-weight: 800;
+      font-size: 0.85em;
+    }
+
+    .s-bar {
+      height: 0.12in;
+      border-radius: 0.08in;
+      background: rgba(255, 255, 255, 0.08);
+      margin-top: 0.12in;
+      overflow: hidden;
+    }
+
+    .s-bar > span {
+      display: block;
+      height: 100%;
+      width: 65%;
+      background: var(--purple);
+    }
+
+    .s-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 0.12in;
+      height: 1.1in;
+      margin-top: 0.15in;
+    }
+
+    .s-chart div {
+      flex: 1;
+      background: rgba(139, 92, 255, 0.9);
+      border-radius: 0.08in;
+      border: 1px solid var(--stroke);
+    }
+
+    /* Pillars */
+    .section-title {
+      font-size: 36pt;
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 0.35in;
+    }
+
+    .pillars {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.28in;
+    }
+
+    .pillar {
+      display: flex;
+      align-items: center;
+      gap: 0.35in;
+      padding: 0.32in 0.4in;
+      background: var(--surface);
+      border: 1px solid var(--stroke);
+      border-radius: 0.28in;
+    }
+
+    .pillar-icon {
+      width: 0.9in;
+      height: 0.9in;
+      border-radius: 0.2in;
+      background: rgba(59, 231, 255, 0.12);
+      border: 1px solid rgba(59, 231, 255, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .pillar-icon svg {
+      width: 0.45in;
+      height: 0.45in;
+      stroke: var(--cyan);
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .pillar h3 {
+      margin: 0;
+      font-size: 34pt;
+      font-weight: 900;
+      color: var(--cyan);
+    }
+
+    .pillar p {
+      margin: 0.06in 0 0;
+      font-size: 26pt;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    /* Architecture */
+    .arch {
+      display: grid;
+      grid-template-columns: 1fr 0.15in 1fr 0.15in 1fr;
+      align-items: stretch;
+      gap: 0;
+    }
+
+    .arch-box {
+      background: var(--surface);
+      border: 1px solid var(--stroke);
+      border-radius: 0.25in;
+      padding: 0.3in 0.25in;
+      text-align: center;
+    }
+
+    .arch-box h4 {
+      margin: 0 0 0.12in;
+      font-size: 28pt;
+      font-weight: 900;
+      color: var(--cyan);
+    }
+
+    .arch-box p {
+      margin: 0;
+      font-size: 22pt;
+      color: var(--muted);
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .arch-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36pt;
+      color: var(--purple);
+      font-weight: 900;
+    }
+
+  .stack-line {
+      text-align: center;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 22pt;
+      font-weight: 500;
+      color: var(--faint);
+      padding: 0.25in;
+      border-radius: 0.2in;
+      border: 1px dashed var(--stroke);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .stack-line strong {
+      color: var(--text);
+    }
+
+    /* Team */
+    .team-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.28in;
+    }
+
+    .team-card {
+      background: var(--surface);
+      border: 1px solid var(--stroke);
+      border-radius: 0.25in;
+      padding: 0.28in 0.32in;
+      display: flex;
+      align-items: center;
+      gap: 0.22in;
+    }
+
+    .team-card.advisor {
+      grid-column: 1 / -1;
+      border-color: rgba(139, 92, 255, 0.35);
+      background: rgba(139, 92, 255, 0.1);
+    }
+
+    .team-avatar {
+      width: 0.75in;
+      height: 0.75in;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 2px solid rgba(59, 231, 255, 0.25);
+      flex-shrink: 0;
+    }
+
+    .team-card h4 {
+      margin: 0;
+      font-size: 26pt;
+      font-weight: 900;
+    }
+
+    .team-card p {
+      margin: 0.05in 0 0;
+      font-size: 20pt;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .footer-qr {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.2in;
+      margin-top: 0.15in;
+    }
+
+    .footer-qr img {
+      width: 2.4in;
+      height: 2.4in;
+    }
+
+    .footer-tag {
+      text-align: center;
+      font-size: 24pt;
+      font-weight: 700;
+      color: var(--muted);
+      line-height: 1.45;
+      padding-top: 0.15in;
+      border-top: 1px solid var(--stroke);
+    }
+
+    .footer-tag em {
+      color: var(--cyan);
+      font-style: normal;
+      font-weight: 800;
+    }
+
+    @media screen {
+      body {
+        padding: 24px 0;
+      }
+      .poster {
+        box-shadow: 0 20px 80px rgba(0, 0, 0, 0.6);
+      }
+    }
+  </style>
+</head>
+<body>
+  <article class="poster">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="inner">
+
+      <header class="header">
+        <div class="ucp">
+          <strong>University of Central Punjab</strong>
+          Faculty of IT &amp; Computer Science<br />
+          Lahore, Pakistan
+        </div>
+        <div class="pill">FoIT Open House · FYP</div>
+        <div class="qr-top">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&amp;margin=8&amp;color=ffffff&amp;bgcolor=09051a&amp;data=mailto:mianshahab77777@gmail.com" alt="QR contact" width="400" height="400" />
+          <div class="qr-label">SCAN · CONTACT</div>
+        </div>
+      </header>
+
+      <section class="hero">
+        <div class="eyebrow">AI-Powered Career &amp; Communication Platform</div>
+        <h1 class="title">VIRTUOMATE</h1>
+        <p class="promise">Emotion-aware AI coaching, live voice sessions, and AI Video CV — in one neural platform.</p>
+        <div class="logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M13 2L4 14h7l-1 8 10-14h-7l0-6z" fill="#EAF0FF"/>
+          </svg>
+          <span class="logo-dot"></span>
+        </div>
+      </section>
+
+      <section class="phones-hero">
+        <div>
+          <div class="phone phone-lg">
+            <div class="phone-notch"></div>
+            <div class="screen screen-dashboard">
+              <div class="s-top">
+                <div>
+                  <div class="s-system">SYSTEM ACTIVE</div>
+                  <div class="s-name">Your AI Coach</div>
+                </div>
+              </div>
+              <div class="s-card">
+                <div class="s-cyan">VIRTUOMATE Neural Engine</div>
+                <div class="s-bar"><span></span></div>
+                <div style="margin-top:0.1in;font-size:0.85em;color:var(--faint);font-weight:700">87% Ready</div>
+                <div class="s-btn">Initialize AI Session</div>
+              </div>
+              <div class="s-card">
+                <strong>Active Mission</strong>
+                <div style="font-size:0.88em;color:var(--muted);margin-top:0.08in">Interview Preparation · 65%</div>
+                <div class="s-bar"><span></span></div>
+              </div>
+              <div class="s-ghost">Neural Analytics</div>
+              <div class="s-ghost">Video CV · Role Play</div>
+            </div>
+          </div>
+          <p class="screen-label">Coaching Dashboard</p>
+        </div>
+      </section>
+
+      <section class="phones-row">
+        <div>
+          <div class="phone phone-sm">
+            <div class="phone-notch"></div>
+            <div class="screen">
+              <div style="text-align:center;font-weight:900;font-size:1em">AI Neural Coach</div>
+              <div class="s-avatar"></div>
+              <div style="text-align:center"><span class="s-pill">Happy · Ready</span></div>
+              <div class="s-card" style="margin-top:0.15in;font-size:0.82em;line-height:1.35">
+                Hello! I'm your AI Neural Coach. How can I assist your career goals today?
+              </div>
+              <div class="s-btn" style="font-size:0.8em;background:var(--green);color:#07171b">Voice Mode</div>
+            </div>
+          </div>
+          <p class="screen-label">AI Voice Coaching</p>
+        </div>
+        <div>
+          <div class="phone phone-sm">
+            <div class="phone-notch"></div>
+            <div class="screen">
+              <div style="font-weight:900">Video CV Preview</div>
+              <div class="s-cyan" style="margin:0.08in 0">Neural Presenter</div>
+              <div class="s-card" style="height:2.8in;display:flex;align-items:center;justify-content:center">
+                <div style="text-align:center">
+                  <div style="font-size:2em">▶</div>
+                  <div style="font-size:0.85em;color:var(--muted);margin-top:0.1in">AI-narrated resume</div>
+                </div>
+              </div>
+              <div class="s-ghost">1080p · Avatar voice</div>
+            </div>
+          </div>
+          <p class="screen-label">Video CV</p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title">What VirtuoMate Does</h2>
+        <div class="pillars">
+          <div class="pillar">
+            <div class="pillar-icon"><svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v5a3 3 0 0 0 3 3z"/><path d="M19 11v1a7 7 0 0 1-14 0v-1M12 18v3"/></svg></div>
+            <div>
+              <h3>Talk</h3>
+              <p>Live voice coaching with speech-to-text &amp; text-to-speech</p>
+            </div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon"><svg viewBox="0 0 24 24"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v1.2a7 7 0 0 1 4.2 12.7l1.4 1.4-1.4 1.4-1.4-1.4A7 7 0 0 1 5 8.5V7A2.5 2.5 0 0 1 7.5 4.5"/><path d="M12 11v6M9 14h6"/></svg></div>
+            <div>
+              <h3>Adapt</h3>
+              <p>Emotion-aware AI using vision &amp; conversational models</p>
+            </div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M10 9l6 3-6 3V9z"/></svg></div>
+            <div>
+              <h3>Present</h3>
+              <p>AI-narrated Video CV from your professional profile</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title">System Architecture</h2>
+        <div class="arch">
+          <div class="arch-box">
+            <h4>Client</h4>
+            <p>Flutter App<br />Dashboard · Chat · Voice · Avatar</p>
+          </div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-box">
+            <h4>Intelligence</h4>
+            <p>Node.js API<br />GPT-4 · Gemini · STT/TTS · Coach</p>
+          </div>
+          <div class="arch-arrow">→</div>
+          <div class="arch-box">
+            <h4>Cloud</h4>
+            <p>Firebase<br />Auth · Firestore · Storage · Analytics</p>
+          </div>
+        </div>
+        <p class="stack-line" style="margin-top:0.35in">
+          Built with <strong>Flutter</strong> · <strong>Node.js</strong> · <strong>Firebase</strong> · <strong>GPT-4</strong> · <strong>Gemini</strong> · <strong>CLIP</strong> · <strong>Cloud Storage</strong>
+        </p>
+      </section>
+
+      <section>
+        <h2 class="section-title">Project Team</h2>
+        <div class="team-grid">
+          <div class="team-card advisor">
+            <div class="team-avatar"></div>
+            <div>
+              <h4>Project Advisor — Sadia Aslam</h4>
+              <p>Faculty of Information Technology &amp; Computer Science</p>
+            </div>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar"></div>
+            <div>
+              <h4>Mian Shahab Ahmad</h4>
+              <p>L1F22BSCS0436 · Project Lead</p>
+            </div>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar"></div>
+            <div>
+              <h4>Muhammad Kamran Saleem</h4>
+              <p>L1F21BSCS0613 · Lead Developer</p>
+            </div>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar"></div>
+            <div>
+              <h4>Omer Imran</h4>
+              <p>L1F21BSCS0617 · QA &amp; UX Lead</p>
+            </div>
+          </div>
+          <div class="team-card" style="grid-column:1/-1;justify-content:center;text-align:center;flex-direction:column">
+            <h4 style="font-size:30pt">Group ID: F25BSCS198</h4>
+            <p>mianshahab77777@gmail.com</p>
+          </div>
+        </div>
+
+        <div class="footer-qr">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=500x500&amp;margin=10&amp;color=ffffff&amp;bgcolor=09051a&amp;data=https://github.com" alt="QR demo" width="500" height="500" />
+          <div class="qr-label">SCAN FOR LIVE DEMO</div>
+        </div>
+
+        <p class="footer-tag">
+          <em>VirtuoMate</em> — An intelligent companion for the modern professional.<br />
+          BSCS Final Year Project · University of Central Punjab
+        </p>
+      </section>
+
+    </div>
+  </article>
+</body>
+</html>

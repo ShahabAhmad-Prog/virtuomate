@@ -1,0 +1,493 @@
+BSCS FINAL PROJECT
+Software Design Specification
+
+VIRTUOMATE 
+
+
+
+
+
+
+
+Project Advisor
+
+Sadia Aslam 
+
+
+
+Presented by: 
+Group ID: F25BSCS198
+
+            Registration No:                                                                      Name:
+
+      L1F22BSCS0436						Mian Shahab Ahmad
+      L1F21BSCS0613 						Muhammad Kamran Saleem
+      L1F21BSCS0617						Omer Imran
+
+
+
+Faculty of Information Technology & Computer Science
+
+University of Central Punjab
+
+Software Design Specification 
+SDP Phase II
+
+VIRTUOMATE 
+
+Advisor: Sadia Aslam
+
+Group F25BSCS198 
+Member NamePrimary ResponsibilityMian Shahab AhmadSystem Architecture & Backend Development LeadKamran SaleemAI/ML Integration & Intelligence ModuleOmer ImranFrontend Development & UI/UX DesignTable of Contents
+Table of Contents	i
+Revision History	ii
+Previous Phases Feedback	ii
+Abstract	iii
+1.	Introduction	1
+1.1	Product	1
+1.2	Background	1
+1.3	Objective(s)/Aim(s)/Target(s)	2
+1.4	Scope	2
+1.5	Business Goals	2
+1.6	Document Conventions	2
+1.7	Miscellaneous	3
+2.	Overall Description	4
+2.1	Product Features	4
+2.2	Functional Description	4
+2.3	User Classes and Characteristics	4
+2.4	Design and Implementation Constraints	4
+2.5	Assumptions and Dependencies	5
+3.	Technical Architecture	6
+3.1	Application and Data Architecture	6 
+3.2	Component Interactions and Collaborations	3
+3.3	Design Reuse and Design Patterns	4
+3.4	Technology Architecture	4
+4.	Screenshots/Prototype	5
+4.1	Workflow	5
+4.2	Screens	5
+4.3	Additional Information	5
+5.	Other Design Details	5
+6.	Revised Project Plan	5
+7.	References	5
+Appendix A: Glossary	6
+Appendix B: IV & V Report	7
+
+
+
+Revision History
+NameDateReason For ChangesVersion
+
+
+Previous Phases Feedback
+
+Idea Defence Feedback (Screenshot)
+
+
+
+Abstract
+The rapid advancement of artificial intelligence has transformed digital interaction, yet many existing AI tools still provide generic responses and lack personalization, emotional awareness, and human-like guidance. Users seeking coaching, interview preparation, and professional self-presentation often face barriers such as high costs, anxiety, and limited access to expert mentors. To address these challenges, VirtuoMate is proposed as an intelligent, adaptive, and user-centric platform that integrates real-time conversational AI, emotional intelligence analysis, avatar-based interaction, and AI-generated video CV creation within a single system.
+VirtuoMate leverages natural language processing, sentiment analysis, and computer vision techniques to understand user emotions, adjust response tone dynamically, and simulate expert-level coaching behavior. The system enables users to engage in interactive coaching sessions, receive personalized feedback, and generate professionally narrated video CVs using AI avatars. By combining emotional understanding with advanced AI guidance, the platform supports the development of communication skills, confidence, and personal growth in a safe and cost-effective digital environment.
+This Software Design Specification (SDS) presents the architectural design, functional modules, data flow, and system requirements of VirtuoMate. The proposed solution aims to bridge the gap between traditional coaching and virtual assistance, offering an innovative approach to soft-skill development and professional readiness in an increasingly digital world.
+
+
+	
+1. Introduction
+1.1 Product
+VirtuoMate is an AI-driven intelligent coaching and professional development platform designed to provide personalized, emotionally aware, and interactive guidance to users. The system addresses the growing gap between traditional human coaching and existing virtual assistants, which often provide generic responses and lack emotional intelligence and adaptability. VirtuoMate integrates real-time conversational AI, avatar-based interaction, emotional analysis, and AI-generated video CV creation into a single unified system.
+The proposed product is a software system that applies advanced artificial intelligence algorithms, including natural language processing, sentiment analysis, and computer vision techniques, to support soft-skill development, interview preparation, confidence building, and professional self-presentation. The end product is a complete software solution that enables users to interact with intelligent avatars, receive expert-level coaching, and generate AI-narrated video CVs, offering a more personalized and human-like digital experience compared to existing tools.
+
+1.2 Background
+In recent years, artificial intelligence has been widely adopted in virtual assistants, chatbots, and online coaching platforms. Existing tools such as basic chatbots, resume builders, and interview preparation applications primarily focus on text-based interactions and predefined responses. While some platforms offer video resume creation or AI chat support, they often lack real-time emotional understanding, adaptive response behavior, and integrated coaching functionality.
+Previous research and industry solutions in this domain have explored conversational AI, sentiment analysis, and avatar-based interfaces separately. However, most existing systems do not combine emotional intelligence, expert-level guidance, avatar interaction, and video CV generation into a single platform. Related academic and industry projects provided by the Project Office typically focus on either chatbot development, interview preparation tools, or multimedia generation systems.
+VirtuoMate differentiates itself by unifying these concepts into one adaptive system that dynamically adjusts its responses based on user emotion, simulates expert coaching behavior, and provides interactive avatar-based guidance. This integration represents a significant advancement over existing standalone solutions and research prototypes.
+
+
+
+
+1.3 Objective(s)/Aim(s)/Target(s)
+The primary objective of the VirtuoMate project is to design and develop an intelligent coaching system that delivers personalized and real-time conversational guidance to users. The system aims to incorporate emotional intelligence mechanisms capable of analyzing user emotions and dynamically adjusting responses to create more natural and empathetic interactions. Another key objective is to implement avatar-based interaction to enhance user engagement by providing a more human-like and immersive experience. Additionally, the project focuses on developing an AI-generated video CV module that enables users to create professional, narrated video resumes tailored to their profiles. The system also aims to offer structured feedback and performance insights that support continuous personal growth, confidence building, and soft-skill development. These objectives are realistic, achievable within the defined project timeline, and align well with the academic and technical requirements of the program.
+1.4 Scope
+The scope of VirtuoMate includes the design, development, and evaluation of a software platform that integrates conversational AI, emotional analysis, avatar interaction, and video CV generation. The system will support user registration, session management, avatar customization, coaching interactions, feedback generation, and subscription handling.
+The project scope is limited to software development and does not include physical hardware deployment or real-world human coaching services. The focus remains on virtual interaction, AI-driven analysis, and digital content generation within a controlled application environment.
+
+1.5 Business Goals
+The business and corporate goals addressed by the VirtuoMate system focus on delivering an affordable and accessible alternative to traditional human coaching services. The platform aims to enhance user engagement by offering personalized and emotionally adaptive interactions that simulate real mentorship experiences. VirtuoMate supports professional development by helping users improve interview readiness, communication skills, and personal branding through guided coaching and feedback. Another key goal is to enable scalable digital coaching solutions that can efficiently serve a large and diverse user base without increasing operational costs. Furthermore, the system establishes a strong foundation for future commercialization, allowing the platform to be offered as a subscription-based service or an enterprise-level solution for educational institutions and organizations.
+1.6 Document Conventions
+This Software Design Specification document follows standard academic and software engineering conventions. The document is written using Times New Roman font, with consistent heading levels and paragraph formatting. Section headings are bolded for clarity, while technical terms and system components are written in normal text without special styling. Diagrams, tables, and figures are clearly labeled and referenced where required. All terminology is used consistently throughout the document to avoid ambiguity.
+
+
+1.7 Miscellaneous
+This document serves as a guiding reference for the design, development, and evaluation of the VirtuoMate system. It is intended for use by project supervisors, evaluators, and development team members to track progress and ensure alignment with project goals. Any changes to system requirements or design decisions during development will be documented and reviewed to maintain consistency with the original project objectives.
+2. 
+Overall Description
+2.1 Product Features
+VirtuoMate is an AI-powered intelligent coaching platform designed to support users in developing communication skills, interview readiness, and personal branding. The system offers real-time conversational coaching using advanced natural language processing techniques and adapts responses based on detected emotional cues. A key feature of the platform is avatar-based interaction, which provides a human-like and engaging experience during coaching sessions. VirtuoMate also includes an AI-generated video CV module that enables users to create professional, narrated video resumes. Additionally, the system provides structured feedback, performance insights, and analytics to help users track progress and improve over time. Premium features such as advanced coaching sessions and detailed reports are supported through a subscription model.
+2.2 Functional Description
+The VirtuoMate system provides a secure application environment where users register and authenticate to access AI-driven coaching services. Authenticated users can interact with a virtual coach through text, voice, and avatar-based interfaces. The system analyzes user inputs in real time and applies emotion recognition techniques to adapt coaching responses accordingly. Users can customize avatars and participate in structured coaching sessions focused on personal and professional development. VirtuoMate also enables the generation of AI-narrated video CVs using user-provided information and avatar animation. Session data, feedback, and performance metrics are securely stored for later review. Subscription services allow access to advanced features through integrated payment processing. The system maintains operational analytics to ensure reliability and performance. All user data is handled using secure communication and storage mechanisms to preserve privacy and confidentiality.
+
+Context Diagram
+
+
+Figure 1 : Context Diagram
+
+
+
+
+
+
+
+
+
+
+2.3 User Classes and Characteristics
+The primary user class of VirtuoMate consists of general users, including students, job seekers, and professionals seeking personal and career development. These users require an intuitive interface, personalized coaching, and constructive feedback. A secondary user class includes premium users, who subscribe to advanced features such as detailed analytics, extended coaching sessions, and video CV creation. Administrators form another important user class and are responsible for managing users, monitoring system performance, and ensuring data integrity and security. Among these, general and premium users are the most critical user classes, as the system is primarily designed to meet their need
+2.4 Design and Implementation Constraints
+The development of the VirtuoMate system is subject to several design and implementation constraints that influence architectural and technical decisions. The system is constrained to use specific technologies, including Flutter for cross-platform application development, Node.js for backend service implementation, and Firebase services for authentication, data storage, and analytics. Artificial intelligence functionalities such as conversational coaching, emotion analysis, speech synthesis, and avatar interaction rely on third-party AI frameworks and APIs, which impose limitations related to usage quotas, response latency, and service availability. The system is also constrained by hardware and device dependencies, as certain features require access to user resources such as cameras, microphones, and sufficient processing capability. Variations in user device performance may affect real-time interaction quality. Security and privacy constraints require secure authentication mechanisms, encrypted communication, and controlled storage of sensitive user data, including audio, emotional analysis results, and video CV content. In addition, the project must be completed within a fixed academic timeline and comply with institutional development standards, documentation guidelines, and ethical requirements.
+2.5 Assumptions and Dependencies
+The VirtuoMate project is developed based on several assumptions and external dependencies. It is assumed that third-party artificial intelligence services, including large language models, text-to-speech engines, and emotion analysis frameworks, will remain available, reliable, and accessible throughout the system's development and evaluation. The system also assumes that end users will have stable Internet connectivity and compatible devices capable of supporting real-time audio, video, and interactive application features. VirtuoMate depends on external libraries, frameworks, and cloud services such as Firebase Authentication, Firestore, cloud storage, and analytics services, as well as AI and media-processing tools used for conversational intelligence and video CV generation. Any changes in third-party APIs, service availability, pricing models, or licensing terms may directly impact system functionality or performance. In addition, successful project completion depends on continuous access to required development resources, cloud infrastructure, and timely academic and technical feedback from the project supervisor.
+3. 
+Technical Architecture
+
+High-Level Architecture Diagram
+
+
+
+
+Figure 2 : Architecture Diagram
+
+	
+
+
+
+
+
+
+Low-Level Architecture Diagram
+
+
+
+
+Figure 3 : Low-Level Architecture
+
+3.1.1 High-Level System Architecture
+The VirtuoMate system follows a custom-built, layered application architecture designed to support intelligent and interactive coaching functionalities. At a high level, the architecture is composed of the User Interface Layer, Application Services Layer, Intelligence Layer, Data Layer, and External Systems, as illustrated in the high-level architecture diagram. This layered organization ensures clear separation of concerns and supports scalability, modularity, and maintainability of the system.
+The User Interface Layer provides the primary interaction point for end users and enables access to system features such as authentication, avatar-based interaction, coaching sessions, video CV creation, subscription handling, and feedback viewing. User requests from this layer are routed to the underlying application services. The Application Services Layer acts as the central coordination layer and manages core system operations including authentication, session management, subscription processing, feedback generation, and media handling. The Intelligence Layer integrates artificial intelligence components such as the AI/Avatar Engine and Emotion Recognition Module to support personalized coaching and adaptive system behavior. Persistent data storage is handled by the Data Layer, while secure payment processing is facilitated through an external Payment Gateway.
+
+3.1.2 Low-Level System Architecture
+The low-level architecture of VirtuoMate provides a detailed view of the internal structure and interactions among individual system components. Each functional module in the Application Services Layer is implemented as a distinct service, including Authentication and Profile Management, Avatar Management, Coaching and Session Management, Subscription Management, Feedback and Analytics, and Video CV Management. These services communicate with the User Interface Layer to process user requests and with the Data Layer to store and retrieve relevant information.
+The system primarily performs online, transaction-oriented processing, such as user authentication, coaching session execution, subscription validation, and feedback generation. Additionally, analytical processing is supported for evaluating user performance and generating insights. The Intelligence Layer components interact closely with the coaching and video CV services to analyze emotional cues, process conversational data, and enhance user engagement. Data repositories store structured information related to users, avatars, sessions, subscriptions, feedback, and video CV content. External integration with the payment gateway enables secure subscription transactions. Overall, the low-level design follows a client-server and layered architectural pattern, supporting modular development, efficient data management, and future system extensibility.
+
+
+
+
+
+
+
+
+
+
+
+3.2 Application and Data Architecture
+ERD
+
+
+
+
+
+
+Figure 4 : ERD
+Class Diagram
+
+
+
+
+
+
+Figure 5 : Class Diagram
+
+SEQUENCE DIAGRAM
+Figure 6.1: UC1-User Registration and Login
+
+Figure 6.2: UC2-Create and Edit Avatar
+
+Figure 6.3: UC3-Start Conversational Session
+
+
+Figure 6.4: UC4-Role Play Simulation
+Figure 6.5 UC-5 Generate AI Video CV
+
+
+
+Figure 6.6: UC6-Receive Feedback and Recommendations
+
+Figure 6.7 : Upgrade To Premium
+
+3.3 Component Interactions and Collaborations
+Activity Diagram
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Figure 7 : Activity diagram
+
+3.4 Design Reuse and Design Patterns
+The design of the VirtuoMate system incorporates established software design patterns and reusable components to enhance maintainability, scalability, and development efficiency. A layered architectural pattern is adopted to clearly separate concerns among the user interface, application services, intelligence modules, data management, and external system integrations. This separation enables independent modification, testing, and extension of system components without impacting the overall system architecture.
+Service-oriented design principles are applied within the Application Services Layer, where core functionalities such as authentication and profile management, coaching and session handling, subscription management, feedback processing, and video CV generation are implemented as independent and reusable services. This approach promotes functional reuse across multiple system workflows and supports future feature expansion with minimal architectural changes.
+The interaction between the user interface and application logic is influenced by the Model-View-Controller (MVC) design pattern, ensuring a clear separation between presentation, business logic, and data management responsibilities. Additionally, reusable artificial intelligence components-such as the AI avatar engine and emotion recognition module-are shared across multiple system features, including coaching sessions and video CV generation, ensuring consistent behavior and reducing redundancy.
+Integration with external systems, such as payment gateways and third-party AI services, follows an adapter-based interaction approach, allowing external services to be replaced or extended without affecting core system functionality. Overall, the use of these design patterns and reuse strategies results in a modular, extensible, and robust system design suitable for both academic development and future enhancement.
+
+3.5 Technology Architecture	
+3.5.1 System Overview
+The VirtuoMate system is designed to operate on a modern, scalable technology architecture that supports intelligent processing, real-time interaction, and secure data management. The application is a custom-built software system and is not based on any commercial off-the-shelf (COTS) product. It primarily operates in an online mode, enabling real-time coaching interactions while also supporting asynchronous background processing for analytics, reporting, and media generation.
+
+
+
+
+
+
+
+3.5.2  Development Platform and Programming Technologies
+VirtuoMate is developed using Flutter for the frontend application, enabling cross-platform deployment with a unified codebase. Backend services are implemented using Node.js, which manages core application logic, API handling, session workflows, and communication with external services.
+Artificial intelligence capabilities, including conversational coaching, emotion-aware responses, and avatar behavior, are implemented through API-based AI services, such as GPT-4, Google Gemini, and CLIP, rather than locally trained machine learning models. This approach enables intelligent behavior while reducing infrastructure complexity.
+
+3.5.3  Application Architecture
+The system follows a layered, client-server architecture, consisting of a user interface layer, application services layer, intelligence layer, and data layer. This architectural approach ensures separation of concerns, scalability, and maintainability. Each layer can evolve independently without impacting the overall system functionality.
+
+3.5.4 User Interface and Communication
+The user interface is implemented as a graphical application interface, allowing users to participate in coaching sessions, interact with avatars, create AI-generated video CVs, and view feedback. Communication between the frontend and backend services occurs over secure Internet-based protocols, ensuring data confidentiality and integrity.
+
+3.5.5  Data Management and Storage
+VirtuoMate utilizes Firebase Firestore, a cloud-based NoSQL database, to manage user profiles, session records, feedback data, and subscription information. Media content, including AI-generated video CVs, is stored using file-based or object storage mechanisms integrated with the backend to support efficient access and scalability.
+
+3.5.6  External Services Integration
+External services such as payment gateways, text-to-speech engines, and AI APIs are integrated through secure application programming interfaces (APIs). These integrations support subscription processing, avatar voice generation, conversational intelligence, and multimedia content creation while following standard security practices.
+
+
+
+
+
+
+3.5.7 Hosting and Connectivity
+The system is hosted on a cloud-based infrastructure, utilizing managed services for hosting, data storage, and analytics. Connectivity is provided over the Internet, enabling access for geographically distributed users and ensuring continuous system availability.
+
+3.5.8 Architectural Quality Attributes
+The proposed technology architecture emphasizes scalability, security, modularity, and extensibility, making it suitable for academic development, evaluation, and future expansion into a production-ready system
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+4. Screenshots/Prototype 
+4.1 Workflow
+
+
+
+Figure 7: Swim-Lane
+
+
+
+
+4.2 Screens
+4.2.1 Authentication
+
+
+
+
+4.2.2 Home Dashboard
+
+
+4.2.3 Avatar Builder Module
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+4.2.4 Conversational AI Sessions
+
+
+
+
+
+
+
+
+
+4.2.5 Specialized Sessions
+
+4.2.6 Video CV Module
+
+
+
+
+
+
+
+
+
+
+
+
+4.2.7 Analytics & Feedback
+
+
+
+
+
+
+
+
+4.2.8 Premium/Subscription
+
+
+
+
+
+
+
+
+
+4.2.9 Settings & Configuration
+
+4.3 Additional Information
+N/A
+5. Other Design Details
+N/A
+6. Revised Project Plan
+TasksJanFebMarAprMayJunJulDesign Specification Document (SDS - Phase 2)User Authentication & Profile SetupWeek 3-4Week 1Database Schema Design & Firebase SetupWeek 2-3Week 1System Architecture & Diagram FinalizationWeek 3-4Week 1AI Coaching Logic DevelopmentWeek 2-4Week 1Emotion Recognition ModuleWeek 3-4Week 1-2Avatar Interaction & TTS IntegrationWeek 2-4Week 1Video CV Generation ModuleWeek 3-4Week 1-2Subscription & Payment IntegrationWeek 2-3Feedback & Analytics ModuleWeek 3-4Week 1Phase 3 (Development & Testing)Application Testing & Bug FixingWeek 2-3System Validation & Performance TestingWeek 3-4Documentation (Final Report & User Manual)Week 4Week 1-2Final Project SubmissionWeek 3
+7. References
+*  Sommerville, I. Software Engineering. 10th Edition. Pearson Education, 2015.
+(Covers software engineering fundamentals, requirements specification, design patterns, and architectural principles.)
+*  Pressman, R. S. & Maxim, B. R. Software Engineering: A Practitioner's Approach. 8th Edition. McGraw-Hill Education, 2014.
+(Provides guidance on SRS structure, design, and system modeling techniques.)
+*  Gamma, E., Helm, R., Johnson, R., & Vlissides, J. Design Patterns: Elements of Reusable Object-Oriented Software. Addison-Wesley, 1994.
+(Explains software design patterns used in architecture and reuse.)
+*  Jurafsky, D. & Martin, J. H. Speech and Language Processing. 3rd Edition (Draft). Pearson, 2021.
+(Provides background on NLP, speech synthesis, and emotion recognition concepts.)
+https://web.stanford.edu/~jurafsky/slp3/
+*  Calefato, F., Lanubile, F., & Novielli, N. "Sentiment Polarity Identification for Software Development." IEEE Software, vol. 35, no. 1, pp. 78-85, 2018.
+(Discusses emotion and sentiment analysis in interactive systems.)
+*  Cao, Y., et al. "A Survey on Emotion Recognition Using Wearable Sensors and AI Techniques." IEEE Access, vol. 6, pp. 25991-26011, 2018.
+(Provides insights into emotion recognition and AI model application.)
+*  Vaswani, A., et al. "Attention Is All You Need." Advances in Neural Information Processing Systems (NeurIPS), pp. 5998-6008, 2017.
+(Foundational research for transformer models like GPT-4 used in AI chat systems.)
+*  Brown, T. B., et al. "Language Models are Few-Shot Learners." Advances in Neural Information Processing Systems (NeurIPS), vol. 33, pp. 1877-1901, 2020.
+(Describes large language models and their capabilities.)
+*  OpenAI. GPT-4 Technical Report. OpenAI, 2023.
+(Details about the GPT-4 architecture used for conversational AI.)
+https://openai.com/research/gpt-4
+*  Google Cloud. Text-to-Speech Documentation. Google, 2025.
+(Documentation for TTS integration used in avatar voice generation.)
+https://cloud.google.com/text-to-speech/docs
+*  Firebase. Firebase Documentation. Google, 2025.
+(Covers Firebase Authentication, Firestore, Hosting, and Analytics.)
+https://firebase.google.com/docs
+*  "Flutter Documentation." Flutter.dev, 2025.
+(Official reference for the frontend development framework.)
+https://flutter.dev/docs
+*  "Node.js Documentation." OpenJS Foundation, 2025.
+(Provides information about the backend development platform.)
+https://nodejs.org/en/docs/
+*  FFmpeg. FFmpeg Documentation. 2025.
+(Used for video processing in the Video CV module.)
+https://ffmpeg.org/documentation.html
+*  Shcherbakov, V., et al. "MediaPipe: A Framework for Building Perception Pipelines." Proc. of the 2020 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops, pp. 51-60, 2020.
+(Describes MediaPipe frameworks used for facial motion and animation.)
+*  "Payment Gateway Integration Best Practices." Stripe Documentation, 2025.
+(General reference for subscription/payment integration.)
+https://stripe.com/docs
+*  Bass, L., Clements, P., & Kazman, R. Software Architecture in Practice. 4th Edition. Addison-Wesley, 2012.
+(Detailed textbook on architectural principles relevant to distributed systems.)
+
+Appendix A: Glossary
+TermDefinitionArtificial Intelligence (AI)Technologies that enable the VirtuoMate system to simulate human intelligence, including reasoning, learning, conversation, and decision-making for personalized coaching.AvatarA digital, animated character that interacts with users through voice and visual responses during coaching sessions and video CV creation.Conversational AIAI-driven technology that enables natural, human-like interaction between users and the virtual coach through text or voice communication.Emotion RecognitionThe process of detecting and analyzing user emotions from text, voice, or facial expressions to adapt coaching responses dynamically.Text-to-Speech (TTS)Technology that converts text-based responses into spoken audio used by the virtual avatar for narration and interaction.Video CVAn AI-generated video resume that combines user-provided information with synthesized speech and avatar animation.FlutterA cross-platform application development framework used to build the VirtuoMate user interface for mobile and desktop devices.Node.jsA backend runtime environment used to implement server-side logic, APIs, and integrations for the VirtuoMate system.Firebase AuthenticationA cloud-based service used to securely manage user registration, login, and identity verification.Firestore DatabaseA cloud-hosted NoSQL database used to store user profiles, session data, feedback, and system records.Cloud StorageA service used to store large media files such as audio recordings and AI-generated video CVs securely and efficiently.SessionA continuous interaction period between a user and the VirtuoMate system during coaching, feedback, or video CV activities.SubscriptionA paid access model that enables users to use premium features such as extended coaching, advanced analytics, and video CV generation.AnalyticsThe collection and analysis of usage and performance data to evaluate user engagement and system behavior.API (Application Programming Interface)A set of interfaces that enable communication between VirtuoMate and external services such as AI models and payment gateways.Payment GatewayAn external service used to securely process subscription payments and financial transactions.Layered ArchitectureA software design approach that organizes system components into distinct layers to improve modularity, scalability, and maintainability.User Experience (UX)The overall ease of use, accessibility, and satisfaction experienced by users when interacting with the VirtuoMate platform.
+
+Appendix B: IV & V Report
+(Independent verification & validation)
+IV & V Resource
+
+
+Name										Signature
+
+
+
+S#Defect DescriptionOrigin StageStatusFix TimeHoursMinutes123...Table 1: List of non-trivial defects
+
+
+This document has been adapted from the following:
+1. Previous project templates at UCP
+2. High-level Technical Design, Centers for Medicare & Medicaid Services. (www.cms.gov)
+VIIRTUOMATE
+
+F25BSCS198	SDP Phase II (SDS)	Page iii
+

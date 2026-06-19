@@ -1,0 +1,1004 @@
+BSCS FINAL PROJECT
+Requirements Specification
+
+VIRTUOMATE 
+
+
+
+
+
+
+Project Advisor
+
+Sadia Aslam 
+
+
+
+Presented by: 
+Group ID: F25BSCS198
+
+Registration No:                                                                              		Name: 
+
+L1F22BSCS0436								Mian Shahab Ahmad
+L1F21BSCS0613 								Muhammad Kamran 
+L1F21BSCS0617								Omer Imran
+
+
+Faculty of Information Technology & Computer Science
+
+University of Central Punjab
+
+Software Requirements Specification 
+Version 1
+
+VIRTUOMATE 
+Advisor: Sadia Aslam 
+
+Group F25BSCS198 
+Member NamePrimary ResponsibilityMian Shahab AhmadProject Manager & Documentation LeadMuhammad Kamran 
+Lead Developer & Technical CoordinatorOmer ImranQuality Assurance & User Experience Lead
+Table of Contents
+Table of Contents	i
+Revision History	ii
+Previous Phases Feedback	ii
+Abstract	iii
+1.	Introduction and Background	1
+1.1	Product (Problem Statement)	1
+1.2	Background	1
+1.3	Scope	1
+1.4	Objective(s)/Aim(s)/Target(s)	1
+1.5	Challenges	2
+1.6	Learning Outcomes	3
+1.7	Nature of End Product	3
+1.8	Completeness Criteria	4
+1.9	Business Goals	4
+1.10	Related Work/ Literature Survey/ Literature Review	5
+      1.10.1 Existing Solutions............................................................................5
+1.10.2 Comparison Table ...........................................................................5
+      1.10.3 Innovation Highlights........................................................................6
+1.11	Document Conventions	6
+2.	Overall Description	7
+2.1	Product Features	7
+	2.1.1 Conversational Coaching ....................................................................7
+      2.1.2 Role-Based Mentoring Simulations .........................................................7
+    2.1.3 AI Video CV Generation .....................................................................7
+    2.1.4 Avatar Customization ........................................................................7
+    2.1.5 Real-Time Feedback ..........................................................................7
+    2.1.6 Progress Tracking .............................................................................7
+    2.1.7 Premium & Business Features...............................................................7
+2.2	User Classes and Characteristics	7
+	2.2.1 Regular Users ..................................................................................8
+      2.2.2 Premium Users ...............................................................................8
+      2.2.3 Institutional Clients ...........................................................................8
+      2.2.4 Administrators..................................................................................8
+2.3	Operating Environment	8
+2.4	Design and Implementation Constraints	9
+	2.4.1 Hardware/Software Constraints .............................................................9
+      2.4.2 Regulatory and Ethical Constraints..........................................................10
+2.5	Assumptions and Dependencies	10
+3.	Functional Requirements	11
+3.1	Use Cases	11
+	3.1.1 User Registration and Login..............................................................11
+      3.1.2 Create/Edit Avatar ........................................................................12
+      3.1.3 Start Conversational Session .............................................................13
+      3.1.4 Role-Play Simulation (Interview/Presentation) .......................................14
+      3.1.5 Generate AI Video CV ...................................................................15
+      3.1.6 Receive Feedback and Recommendations .............................................16
+      3.1.7 Upgrade to Premium .....................................................................17
+      3.1.8 Admin: User Management ...............................................................18
+      3.1.9 Admin: Training Session Analytics.....................................................18
+3.2	Requirements Analysis and Modeling	19
+	3.2.1 Use Case Diagram ....................................................................19
+      3.2.2 Entity-Relationship Diagram ........................................................20
+      3.2.3 Sequence Diagrams ...................................................................21
+      3.2.4 Activity Flow Diagrams .............................................................22
+      3.2.5 Data Flow Diagrams (DFDs) .......................................................23
+      3.2.6 State Diagrams........................................................................25
+4.	Nonfunctional Requirements	26
+4.1	Performance Requirements	26
+4.2	Safety Requirements	26
+4.3	Security Requirements	26
+	4.3.1 User Data Protection ........................................................................26
+      4.3.2 AI & Content Moderation..................................................................27
+4.4	Additional Software Quality Attributes	27
+	4.4.1 Availability ...................................................................................27
+      4.4.2 Maintainability ...............................................................................27
+      4.4.3 Portability ....................................................................................28
+      4.4.4 Scalability.....................................................................................28
+5.	Other Requirements	29
+    5.1 Legal, Licensing, & Compliance ..................................................................29
+      5.1.1 Data Privacy Laws (GDPR, COPPA, etc.) ..............................................30
+      5.1.2 Copyright & Third-Party Content ........................................................30
+      5.1.3 Terms of Use and User Agreements ......................................................30
+    5.2 Accessibility Standards ..............................................................................30
+      5.2.1 Screen Reader Support ......................................................................30
+      5.2.2 High Contrast & Font Size ...............................................................30
+      5.2.3 Keyboard Navigation ......................................................................30
+    5.3 Internationalization & Localization ..............................................................31
+      5.3.1 Supported Languages ......................................................................31
+   5.3.2 Regional Formats (Date/Time, Currency) ..............................................31
+   5.3.3 Localization Testing .......................................................................31
+   5.4 Ethical Use Considerations .........................................................................31
+      5.4.1 Bias Mitigation in AI .......................................................................31
+      5.4.2 Safeguards Against Misuse ...............................................................31
+      5.4.3 Responsible AI Practices...................................................................31
+6.	Revised Project Plan	32
+    6.1 Gantt Chart ...........................................................................................32
+    6.2 Milestone Schedule .................................................................................32
+7.	References	33
+Appendix A: Glossary	34
+
+
+
+
+Revision History
+NameDateReason For ChangesVersion
+
+
+
+Previous Phases Feedback
+
+Idea Defence Feedback (Screenshot)
+
+
+Abstract
+
+VirtuoMate is an AI-powered mobile application designed to deliver emotionally intelligent mentoring, communication coaching, and professional skill development for individuals navigating personal and career growth challenges. Unlike traditional chatbots or fragmented self-improvement platforms, VirtuoMate creates adaptive virtual avatars that interact with users in a natural and empathetic manner through text and voice. Core features include real-time conversational coaching, role-play simulation for interviews and presentations, and an AI-generated Video CV creator, all powered by advanced natural language processing and speech synthesis.?
+
+The app utilizes state-of-the-art technologies-such as GPT-4 for conversational intelligence, Google and Amazon TTS for voice, and Unity-based avatar animation-to provide a private, judgment-free space for practicing communication skills, building confidence, and preparing for real-life scenarios. Users benefit from personalized guidance tailored to their goals, while premium functionality unlocks niche mentors (e.g., public speaking coach, job interview trainer, startup advisor) and additional professional assessment features.?
+
+VirtuoMate's modular design enables integration with institutional HR systems, language learning platforms, and coaching apps, creating scalable opportunities for organizations in education and business. The project delivers significant advantages in accessibility, motivation, and self-improvement by simulating expert behavior and responding empathetically to user emotions-a leap forward in AI-driven personal development solutions.
+
+1. Introduction and Background
+You are required to write a brief introduction of your project and provide background. In this section you should provide the context and initial knowledge of the domain. You should also highlight the significance of problem and provide motivation behind the work being done.
+1.1 Product (Problem Statement)
+Many individuals-especially introverts and those experiencing low confidence-struggle with communication in professional, academic, and social settings. Existing mentorship and chat-bot solutions often fail to offer the privacy, adaptive feedback, and empathetic support required to build genuine self-assurance. Most platforms provide generic, repetitive responses with limited capacity for practicing difficult conversations or overcoming social anxiety. For introverts, the lack of tailored, judgment-free environments inhibits their ability to experiment, learn, and grow without fear of embarrassment or rejection
+1.2 Background
+Introverts and individuals lacking in confidence commonly report high anxiety, difficulty speaking up during interviews or presentations, and limited access to supportive mentorship due to cost, time, or social barriers. While some apps offer partial solutions (chat support, self-learning modules), none combine interactive simulation, expert avatar guidance, and deep feedback in a way that enables private, realistic skill practice at any time. VirtuoMate is developed to directly address these needs, empowering users-regardless of personality type or confidence level-to gain practical experience, tailored motivation, and adaptive coaching as they pursue their goals.
+1.3 Scope
+This requirements specification details VirtuoMate's core technical vision, focusing on accessibility and growth for introverts, confidence-challenged users, students, professionals, and self-learners. Included are functional and nonfunctional requirements, architectural components, user scenarios, and evaluation plans to deliver practical, measurable impact in confidence and communication skills development.
+1.4 Objective(s)/Aim(s)/Target(s)
+Provide a personalized, judgment-free mentoring environment: Enable introverts and people who lack confidence to practice communication and professional skills privately, without fear of criticism or embarrassment.?
+
+Develop an emotionally intelligent avatar system: Simulate realistic expert behavior and adaptive feedback for role-playing scenarios such as interviews, presentations, customer interactions, and difficult conversations.?
+
+Integrate next-generation conversational AI: Use advanced NLP (e.g., GPT-4, Gemini), sentiment analysis, and speech synthesis to deliver context-aware responses and motivational support.?
+
+Support skill development for diverse user needs: Include features specifically designed for confidence-building, such as motivational encouragement, progress visualization, and gentle correction in real-time sessions.?
+
+Make expert mentorship accessible to all: Offer premium access to niche-specific coaches (e.g., job interview trainer, startup advisor, public speaking mentor) for users who need targeted expertise and support.?
+
+Provide comprehensive professional outputs: Allow users to generate AI-narrated video CVs, track skill improvement over time, and export profiles for institutional or career use.?
+
+Deliver a scalable, cross-platform solution: Build the app using Flutter, Node.js, and cloud integration (Firebase), ensuring smooth performance and adaptability across mobile devices and integration with business, educational, and HR systems.?
+
+Ensure ethical and accessible design: Adhere to privacy laws, support accessibility standards, and mitigate AI bias to benefit all users equally, regardless of background or experience.?
+
+Support lifelong learning and personal growth: Encourage continued confidence-building and skill practice, helping users become more articulate, self-assured, and successful in their personal and professional journeys.?
+1.5 Challenges
+Accurate Emotion and Intent Detection: Ensuring the AI accurately detects user emotions and communication intent-particularly for introverts and low-confidence users-remains technically challenging due to subtle speech/text cues and diverse personality expression.?
+
+Realistic Avatar Engagement: Creating life-like, empathetic avatars that can adapt in real time and simulate various expert behaviors in both text and voice without seeming artificial or awkward, demands advanced AI and integration of multiple APIs.?
+
+User Privacy and Data Sensitivity: Protecting sensitive user data, especially for confidence-improving and vulnerable populations, requires rigorous adherence to global privacy standards (e.g., GDPR), secure authentication, and transparent data practices.?
+
+Mobile Performance and Video Rendering: Achieving smooth real-time conversational AI, avatar animation, and video CV generation on low-to-mid-range mobile devices without lag or excessive battery/CPU drain poses significant system optimization challenges.?
+
+Motivating Continued Usage: Inspiring regular use and sustained improvement among users who may be hesitant, self-conscious, or demotivated requires thoughtful UX design, gamification, and personalized feedback without overwhelming or discouraging users.?
+
+Integration Complexity: Coordinating multiple dependencies-NLP engines, avatar platforms, speech synthesis modules, and video processing pipelines-increases the risk of technical breakdowns, version mismatch, and maintenance complexity.?
+
+Bias and Inclusivity in AI Responses: Addressing the risk of algorithmic bias, insensitive responses, or reinforcement of negative self-perceptions is essential, especially for users with confidence or anxiety issues.?
+
+Accessibility and Usability: Guaranteeing that virtual mentorship tools are accessible to people with disabilities, various language backgrounds, and a wide spectrum of digital familiarity is a non-trivial design and testing challenge.
+1.6 Learning Outcomes
+Apply advanced AI and machine learning techniques to real-world problems in user communication, confidence, and mentorship.?
+
+Integrate multiple APIs and cloud services-including NLP (GPT-4), speech synthesis (Google TTS, Amazon Polly), and avatar engines-into a seamless mobile application.?
+
+Design emotionally adaptive systems that respond sensitively to user emotions, with special benefit for introverts and low-confidence individuals seeking private, motivational practice.?
+
+Develop user experiences that combine voice, text, avatar animation, and video output for immersive, practical training.?
+
+Use collaborative DevOps and Agile methodologies for project planning, team development, and iterative improvement.?
+
+Address real challenges in cross-platform mobile engineering: optimizing performance, managing data securely, and supporting accessibility.?
+
+Evaluate and deliver a deployable software product with industry relevance-capable of serving educational, HR, and coaching markets.?
+
+Gain insights into ethical AI use, privacy regulation, bias mitigation, and responsible development for sensitive user bases.?
+
+Foster personal growth and self-confidence in communication skills, enabling both developers and end users to achieve greater success in academic, professional, and interpersonal domains.
+1.7 Nature of End Product
+The final deliverable of VirtuoMate is a cross-platform mobile application featuring an emotionally intelligent, adaptive virtual avatar designed for personalized mentoring and professional growth. This product allows users to engage in real-time conversational coaching, simulate role-play scenarios such as interviews and presentations, and generate AI-narrated Video CVs using avatar technology.?
+
+VirtuoMate integrates multiple advanced technologies-including natural language processing, sentiment analysis, speech synthesis, and cloud-based data management-to offer a lifelike, empathetic experience for users. The system prioritizes privacy and motivation for users, particularly targeting introverts and individuals seeking a confidence boost in communication skills or career readiness.?
+
+The app is extensible for institutional use (education, HR, coaching firms) and can be enhanced with branded avatars, premium mentor access, and integration with external platforms. VirtuoMate stands as a unified solution for personal development, combining practical training, professional outputs, and innovative emotional intelligence.
+1.8 Completeness Criteria
+Mobile Application Functionality:
+The application must run smoothly on Android and iOS devices, enabling user registration/login, avatar creation, conversational AI sessions (text and voice), and video CV generation.?
+
+Emotionally Intelligent Avatars:
+The system must demonstrate real-time text/voice interaction capabilities, adapt responses based on user input and sentiment, and simulate expert mentor behaviors for use cases such as interview prep, public speaking, and emotional support.?
+
+API & Backend Integration:
+Seamless integration with backend (Node.js/Firebase), conversational AI (GPT-4 or equivalent), TTS/STT engines, and avatar animation modules must be present, ensuring reliable real-time data exchange and session persistence.?
+
+User Privacy and Security:
+Strict adherence to security best practices must be evident, with user data encrypted and managed following GDPR/local privacy laws. The app must also provide robust authentication and the ability to delete/export user data.?
+
+Testing and Documentation:
+The product must include comprehensive testing (unit, integration, and user acceptance), clear documentation (user manual, API references, developer notes), and deployment instructions, demonstrating a high degree of usability and maintainability.?
+
+Performance Metrics:
+The application should load within 2 seconds, maintain real-time response in conversations, and handle video rendering/processing without crashing or excessive lag on target devices.?
+
+Premium and Institutional Features:
+Premium features, such as access to niche expert avatars and portfolio/CV export options, must be available to selected user tiers. Business/institutional integration (admin dashboards, analytics, branded avatars) is optional for extended completeness.?
+
+Evaluation Against Objectives:
+The system will be judged complete when it enables private, empathic, confidence-building practice; supports core real-world scenarios for introvert and general users; and delivers a deployable, scalable solution with clear impact for its target audience.
+1.9 Business Goals
+Commercial Viability and Revenue Generation:
+VirtuoMate aims to become a commercially viable product by offering premium features, such as niche specific mentors, branded avatars, and exclusive skill-development modules available to paying users and institutional clients.?
+
+Integration with HR and coaching platforms:
+The application seeks strategic partnerships with human resources, educational institutions, and coaching organizations to provide professional development, onboarding, and career readiness solutions on a scalable digital platform.?
+
+Brand Differentiation and Global Reach:
+By combining avatar visualization, AI-driven communication coaching, video CV generation, and real-time adaptive feedback, VirtuoMate differentiates itself from competitors and appeals to a wide global audience seeking self-improvement and personal branding.?
+
+Institutional Licenses and B2B Markets:
+The platform is designed for easy adaptation and licensing by schools, universities, and businesses that want to offer modern, virtual mentorship and interview preparation tools to students and employees.?
+
+Continuous Innovation and Market Leadership:
+VirtuoMate plans ongoing upgrades to AI models, UX features, and language support, ensuring continued relevance and leadership in the competitive market for AI-powered self-development applications.
+1.10 Related Work/ Literature Survey/ Literature Review
+1.10.1 Existing Solutions
+      
+Several digital tools aim to support communication skills and personal development, each with a distinct focus:
+
+Replika: Provides emotional support through chatbot-based conversations, helping users cope with loneliness but lacking practical professional scenario simulation.
+
+ELSA Speak: Focuses on English pronunciation and fluency training using speech recognition, effective for language learners but not for broad confidence-building or role-playing.
+
+Canva/Animaker: Offer video resume and portfolio creation, allowing users to visually present themselves but without interactive AI, avatar simulation, or real-time communication coaching.
+
+Mentor.AI/Goal Mentor: Explore AI-driven goal setting and mentoring, but generally lack the emotional intelligence and deep simulation features VirtuoMate offers.
+1.10.2 Comparison Table
+
+PlatformEmotional SupportReal-time AI CoachingRole-Play SimulationVideo CV CreatorPersonalized FeedbackVirtuoMateYesYesYesYesYesReplikaYesNoNoNoLimitedELSA SpeakNoYesNoNoLanguage OnlyCanva/AnimakerNoNoNoYesNo/Minimal1.10.3  Innovation Highlights
+
+VirtuoMate uniquely merges emotionally adaptive, AI-driven conversational coaching with scenario-based simulations and the ability to produce AI-narrated, avatar-led video CVs-empowering users, particularly introverts and those with low confidence, to grow in both personal and professional domains. Unlike fragmented solutions, VirtuoMate delivers a unified, private, and scalable experience that covers both emotional and skill-building needs
+
+1.11 Document Conventions
+Terminology:
+Technical terms such as "avatar," "NLP," "sentiment analysis," and "Video CV" are used according to industry standards and project-specific definitions. Details are provided in the glossary for any specialized language.?
+
+Formatting and Structure:
+Section headings follow the hierarchical numbering from the Table of Contents for easy cross-referencing. Bullet points, markdown tables, and diagrams are utilized for clarity and readability throughout the document.?
+
+Requirement Statements:
+Functional and non-functional requirements are listed using unique identifiers (e.g., FR-1, NFR-1) and are clearly differentiated. Use cases, diagrams, and models are cited to ensure traceability between requirements and implementation.?
+
+References and Citations:
+All referenced research papers, APIs, and technical resources are documented in the References section at the end of the specification. Citations are included as numeric superscripts or in-text reference brackets.?
+
+Inclusive Language and Accessibility:
+Wherever possible, user-centric and inclusive language is adopted, with special care taken to include audiences such as introverts or users with confidence challenges. Accessibility guidelines are applied in specifications related to UI and usability features.?
+2. 
+Overall Description
+2.1 Product Features
+Conversational Coaching:
+Real-time conversations with an emotionally intelligent avatar, supporting both text and voice. The avatar provides adaptive feedback and motivational support as users practice speaking, self-expression, and professional scenarios.?
+
+Role-Based Mentoring Simulations:
+Simulate real-world situations like job interviews, public speaking, difficult conversations, and customer service, allowing users (especially introverts and low-confidence individuals) to build skills in a safe, private environment.?
+
+AI Video CV Generation:
+Users can create, narrate, and export professional video CVs driven by AI and avatar animation, aiding career development and institutional onboarding.?
+
+Avatar Customization:
+Personalize avatar appearance, voice, and behavioral traits, supporting diverse styles and language backgrounds to make the experience relatable and inclusive.?
+
+Real-Time Feedback:
+Get instant motivational tips, constructive corrections, and progress insights, tailored to specific user needs and goals in every session.?
+
+Progress Tracking:
+The platform visualizes user skill growth, session history, and achievement milestones, helping maintain motivation for regular practice and personal improvement.?
+
+Premium & Business Features:
+Unlock access to expert mentors (e.g., interview coach, public speaking trainer), business dashboards for institutions, and integration with external HR or educational systems.?
+2.2 User Classes and Characteristics
+2.2.1 Regular Users
+Individuals seeking self-improvement, mainly university students and young professionals.
+
+Value private, judgment-free environments to build confidence and rehearse communication.
+
+2.2.2 Premium Users
+Users subscribing for extra content, expert mentors, and advanced skill-tracking features.
+
+Often preparing for job interviews, demanding workplace roles, or competitive educational opportunities.
+
+2.2.3 Institutional Clients
+Educational institutions, HR departments, and coaching organizations.
+
+Use VirtuoMate for onboarding, talent evaluation, skill development, or group sessions.
+
+2.2.4 Administrators
+Manage user roles, moderate sessions, access analytics, and ensure security and ethical platform use.
+
+2.2.5  Special Focus: Introverts and Low-Confidence Users
+Individuals who find in-person mentoring intimidating or are anxious about public speaking.
+
+Benefit from sensitive, AI-driven coaching designed to reduce anxiety and boost real-world confidence by allowing repeated, supportive practice.
+
+2.3 Operating Environment
+Target Platforms:
+VirtuoMate is designed as a cross-platform mobile application for both Android and iOS devices, developed using Flutter to maximize compatibility and user reach.?
+
+Supported Devices:
+The app aims to work effectively on smartphones and tablets with moderate system specifications, requiring only standard hardware (microphone, camera, speakers) for full functionality.?
+
+Backend Infrastructure:
+The backend utilizes Node.js and Firebase for authentication, data storage, session tracking, and real-time communication between users and avatar coach servers.?
+
+API and Third-Party Services:
+The system integrates external APIs for AI (e.g., OpenAI GPT-4), text-to-speech (Google TTS, Amazon Polly), avatar animation (Unity, Ready Player Me), video processing (FFmpeg, MediaPipe), and institutional data exchange.?
+
+Network and Security:
+Regular operation requires internet access for API calls, cloud storage, and real-time data synchronization-secure channels (HTTPS, encrypted web sockets) are mandatory to protect user privacy and sensitive information.?
+
+Accessibility:
+The app supports screen readers, touch navigation, and multilingual options, ensuring ease of use across diverse user groups, including those with disabilities and users from varied language backgrounds.
+2.4 Design and Implementation Constraints
+Hardware/Software Constraints:
+Development is confined to widely available mobile platforms (Android/iOS) using Flutter SDK. Avatar animation and video CV rendering need devices with adequate processing and storage, but must also operate on mid-tier smartphones.?
+
+Third-Party Dependency:
+System relies heavily on APIs such as OpenAI GPT-4 (for conversational AI), Google/Amazon TTS (for avatar voice), Unity/Ready Player Me (for character animation), and FFmpeg/MediaPipe (for video synthesis). Reliability and licensing of these APIs are critical.?
+
+Database and Cloud Storage:
+All user records, session data, and generated media are stored on Firebase/Firestore, subject to costs, quotas, and uptime of cloud providers.?
+
+Security and Privacy:
+Data encryption, secure authentication, and privacy compliance (e.g., GDPR) are non-negotiable constraints for collecting and managing user data-particularly for confidence-challenged and introvert users.?
+
+Performance Optimization:
+App must process real-time sessions and render video outputs swiftly without excessive battery or network usage, creating limits on advanced features for lower-spec devices.?
+
+Project Timeline and Resource Limits:
+The project must be completed within two semesters, with available budget and hardware (standard laptops). Procurement delays or resource shortages impact achievable milestones.?
+
+Ethical and Regulatory Compliance:
+Every design decision should consider ethical guidelines, avoiding biased feedback and misuse of AI-generated content. Accessibility is required for users with disabilities.
+2.5 Assumptions and Dependencies
+Availability of Third-Party APIs:
+Continuous access to AI (OpenAI GPT-4), speech synthesis (Google TTS, Amazon Polly), avatar creation (Unity, Ready Player Me), and video processing (FFmpeg, MediaPipe) APIs is assumed for implementing conversational, visual, and voice features.?
+
+Reliable Internet Connectivity:
+Stable network access is necessary for all real-time sessions, cloud data storage, and video/media generation. Users must have a suitable internet connection for app functionality.?
+
+Up-to-date Development Tools:
+It is assumed that project members will have access to current versions of development tools (Flutter, Node.js, Firebase, Unity) and functional modern laptops with GPU support for avatar rendering.?
+
+Compliance with Data Privacy Laws:
+The project assumes the legislative landscape (GDPR, local privacy regulations) will not change in ways that would prohibit required user data processing for platform features.?
+
+User Willingness and Engagement:
+It is assumed users (especially introverts and confidence-challenged individuals) will be motivated to practice skills and utilize provided mentoring sessions regularly in a private digital environment.?
+
+Institutional and Business Partnerships:
+Future integration of VirtuoMate with HR, educational, and professional development systems is dependent on institutional openness and availability of partnership agreements.?
+
+Language and Accessibility Requirements:
+The initial version will focus on English language support; additional language and accessibility features depend on user research, partner demands, and technical feasibility.?
+3. 
+Functional Requirements
+<All functional requirements are expressed as use-cases. Fill out the following template for each use-case. Don't really say "Use-Case 1." State the use-case name in just a few words e.g. "Withdraw Cash from ATM". A use-case may have multiple alternate courses of action.>
+
+<Provide a Use Case Diagram before describing the use cases.>
+3.1 Use Cases
+3.1.1 User Registration and Login
+IdentifierUC-1PurposeAllow users to securely register new accounts and log in to access all features of VirtuoMate.PriorityHighPre-conditionsUser has not already logged in; app is installed and user has network connection.Post-conditionsUser is authenticated and provided access to the personal dashboard and app features.
+Typical Course of Action
+
+S#Actor ActionSystem Response1User opens the app and selects "Register"/"Login".System displays registration/login form.2User enters required credentials (email, password, etc.) and submits.System validates input and creates/verifies account using backend.3User successfully authenticates.System logs user in and loads the home/dashboard screen.
+
+
+
+
+
+
+
+Alternate Course of Action
+
+S#Actor ActionSystem Response1User enters invalid credentials.System displays error and prompts retry.2User forgets password.System offers password reset workflow via email/SMS.3User cancels registration/login.System returns to welcome/start screen.3.1.2 Create/Edit Avatar
+IdentifierUC-2PurposeAllow users to create and personalize their virtual avatar, selecting visual appearance, voice, and mannerisms that best represent their identity and communication style.PriorityHighPre-conditionsUser must be logged in; registration complete.Post-conditionsUser's avatar is saved and ready for all AI-driven interactions.
+Typical Course of Action
+
+S#Actor ActionSystem Response1User navigates to the "Avatar" section.System displays avatar builder interface.2User selects or customizes avatar's appearance (face, hairstyle, attire, etc.).System updates avatar visuals in real time.3User selects voice and behavioral traits.System previews and saves choices.4User confirms or edits selections.System finalizes and saves the avatar.
+
+
+
+
+
+
+
+
+Alternate Course of Action
+S#Actor ActionSystem Response1User cancels customization.System reverts to previous avatar or default.2Customization options fail to load.System displays error and troubleshooting help.3User exits without saving.System prompts to save or informs changes are lost.
+3.1.3 Start Conversational Session
+IdentifierUC-3PurposeAllow users to initiate a real-time conversational session with their AI avatar, enabling lifelike, adaptive dialogue for practicing communication and developing soft skills.PriorityHighPre-conditionsUser is logged in and has an avatar configured.Post-conditionsA coaching or practice session is started; conversation data is recorded; session can be ended by the user.
+Typical Course of Action
+
+S#Actor ActionSystem Response1User selects "Start Conversation" or similar option.System loads avatar, initializes a new session context.2User speaks or types to the avatar.System processes input (text or voice), avatar greets user and responds.3User and avatar continue dialogue in real time.System continues interaction, adapts replies, tracks emotions and current goals.4User ends session or requests session summary.System saves conversation record, shows session stats/feedback.
+
+
+
+Alternate Course of Action
+
+S#Actor ActionSystem Response1User stops responding during session.System prompts to check if user wants to continue or end session.2System detects connectivity loss.System notifies the user; attempts to auto-resume on reconnect.3User switches conversation mode (text/voice).System smoothly transitions between text/voice modes.
+
+3.1.4 Role-Play Simulation (Interview/Presentation)
+IdentifierUC-4PurposeLet users practice important real-life scenarios (e.g., job interviews, presentations) with their AI avatar, gaining personalized skill coaching through simulated, adaptive questions and environments.PriorityHighPre-conditionsUser is logged in and has configured an avatar; selects desired scenario.Post-conditionsUser completes the simulation, receives instant feedback, and session data is saved for future growth tracking.
+Typical Course of Action
+S#Actor ActionSystem Response1User selects a scenario (e.g., Interview, Presentation) from the Role-Play module.System loads relevant scenario and avatar with appropriate settings.2User starts the simulation and responds to the avatar's questions/prompts (text or voice).System interprets user responses, gives real-time reactions, and dynamically generates further scenario content.3User continues the dialogue, practicing different answers and approaches.System adapts level of challenge, injects constructive feedback and motivational cues.4User finishes the scenario and requests summary.System presents detailed feedback (performance, confidence, clarity), and saves the session for review.
+Alternate Course of Action
+
+S#Actor ActionSystem Response1User ends the simulation early.System saves partial progress, prompts for next steps (retry/resume).2User skips or requests a new question.System replaces the prompt or generates a new scenario question.3Scenario/voice modules fail to load.System notifies user and suggests troubleshooting or contact support.
+3.1.5 Generate AI Video CV
+IdentifierUC-5PurposeAllow users to create an AI-narrated, avatar-driven video resume (CV) presenting their profile, experience, skills, and achievements in a professional, shareable format.PriorityHighPre-conditionsUser is logged in with a completed profile and has an active avatar.Post-conditionsVideo CV is generated, previewed, and user is able to download, export, or share the file.
+Typical Course of Action
+S#Actor ActionSystem Response1User navigates to the Video CV section in the app.System loads the CV builder, requests user to review/edit profile content.2User enters/selects experiences, education, achievements, and personal intro.System populates the avatar's script and previews video with AI narration.3User customizes the look/voice of avatar or background visuals as desired.System updates and previews changes in real time.4User submits to generate final video.System processes request, renders video CV, and notifies user when ready.5User views, downloads, or shares the video CV.System provides MP4 (and subtitle) download links, and sharing/export options.
+Alternate Course of Action
+
+S#Actor ActionSystem Response1User cancels mid-process.System saves draft, notifies user that CV is incomplete.2Upload or render fails.System displays error, suggests retry or contacting support.3User requests new background music or watermark.System updates video mix and regenerates preview.
+3.1.6 Receive Feedback and Recommendations
+IdentifierUC-6PurposeProvide users with instant feedback, motivational advice, and actionable recommendations after practice sessions or role-play scenarios.PriorityHighPre-conditionsUser has completed a conversational, interview, presentation, or simulation session.Post-conditionsUser receives a session summary, with confidence, performance scores, corrective feedback, and personal tips.
+Typical Course of Action
+
+S#Actor ActionSystem Response1User ends a session and requests feedback.System analyzes session data and compiles results.2User views the feedback and recommendations.System presents a summary (scores, charts, advice, next steps).3User requests more details or clarification.System displays breakdown of strengths/weaknesses and improvement suggestions.
+Alternate Course of Action
+
+S#Actor ActionSystem Response1User requests feedback but session is incomplete.System prompts user to finish session or provides partial feedback.2Feedback engine fails to process.System alerts user and recommends retry.3User disagrees with feedback.System offers option to flag feedback for review or contact support.
+3.1.7 Upgrade to Premium
+IdentifierUC-7PurposeEnable users to unlock extra features, expert mentor sessions, exclusive modules, and business integration tools by upgrading to a premium subscription.PriorityMediumPre-conditionsUser is logged in and has access to standard (free) features.Post-conditionsUser's account is upgraded; premium features are unlocked and accessible instantly.
+Typical Course of Action
+
+S#Actor ActionSystem Response1User opens "Upgrade" or subscription section.System displays premium features, plans, pricing details.2User selects a subscription and initiates payment.System processes and verifies payment securely.3Payment is successful.System confirms upgrade, thanks user, and unlocks premium content.
+
+
+
+
+
+
+
+Alternate Course of Action
+
+S#Actor ActionSystem Response1User cancels before payment.System keeps user on standard plan, no charges made.2Payment fails or is declined.System informs user, lists options to retry or contact support.3User requests info about downgrade/refund.System presents downgrade and refund policy options.
+
+3.2 Requirements Analysis and Modeling
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Entity-Relationship Diagram
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+4. Non-Functional Requirements
+4.1 Performance Requirements
+* The system shall respond to any user action (navigation, starting a session, submitting answers) within 2 seconds under average load (=5,000 concurrent users).?
+
+* AI-driven feedback or session summary must be delivered within 4 seconds of session completion.
+
+* The platform shall support at least 10,000 simultaneous session streams without noticeable performance degradation.
+4.2 Safety Requirements
+* The system shall undergo routine risk assessment and review to identify potential hazards associated with data loss, system misbehavior, or AI content faults.?
+
+* All sensitive controls and features must include validation checks to prevent accidental operation (such as unintentional session start/end or profile modification).
+
+* Safety procedures, including secure backup, error recovery, and session fault isolation, must be tested before release and documented for internal audits.
+
+* The software development process must regularly evaluate known and potential failure modes (e.g., system crash during session, unintended feedback errors) and update controls as needed.
+4.3 Security Requirements
+4.3.1 User Data Protection:
+
+* The system shall comply with major international and industry-specific regulations for user data protection, such as GDPR, CCPA, HIPAA, and PCI-DSS.?
+
+* All user authentication must use strong multi-factor authentication (MFA), with support for biometrics (fingerprint, facial recognition) and time-limited access codes if available.?
+
+* User data (personally identifiable information, sensitive documents, session logs) will be encrypted both at rest and in transit using industry-standard algorithms (e.g., AES-256, TLS 1.2+).?
+
+* The system shall enforce strict access controls, using role-based permissions and granular file/document access rules, so only authorized users and admins can interact with sensitive content.?
+
+* Detailed audit trails for all user activities and data access must be maintained to support compliance investigations and rapid breach response.?
+
+* Data breach response and notification procedures must follow regional laws, including user notification within 72 hours when required by GDPR.?
+
+* Explicit, informed consent must be obtained before collecting, processing, or sharing any user data, with clear privacy notices explaining user rights.?
+
+You may reply "next" for 4.3.2 (AI & Content Moderation) or request elaboration on a specific security point.
+
+4.3.2 AI & Content Moderation
+The system shall employ advanced AI-powered content moderation tools to automatically review, categorize, and, when necessary, restrict or remove harmful, offensive, or non-compliant user-generated content in real time.
+
+Moderation engine must support multiple content types including text, images, audio, and video-processing content using machine learning (ML), natural language processing (NLP), and computer vision techniques to detect threats such as profanity, bullying, racism, fraud, sexual harassment, spam, and other forms of abuse.?
+
+All moderation models must be highly accurate (=99% on core abuse types), support custom policy rules, and be capable of multilingual operation (including informal language, slang, and regional dialects).?
+
+Automated decisions (flag/reject/accept) should be explainable and logged for transparency, compliance, and ongoing review by human moderators where needed.?
+
+Human-in-the-loop moderation workflows shall be available for nuanced or escalated cases, ensuring platform guidelines are applied fairly and consistently.?
+
+The moderation system must be configurable to adapt to evolving community standards, regulatory compliance, and organization-specific policy changes, enabling rapid updates without code changes.?
+
+All moderation activity-including AI decisions and human interventions-will be auditable and support transparency reporting for enforcement actions and regulatory obligations.
+4.4 Additional Software Quality Attributes
+4.4.1 Availability
+The system shall be operational and accessible 99.5% of every calendar month, excluding scheduled maintenance windows.
+
+Monitoring and automatic alerts must be implemented to detect downtime and enable rapid issue response.
+
+Automatic failover and data backup procedures must ensure minimal disruption in the event of a server failure or outage.
+4.4.2 Maintainability
+The software shall consistently apply clear coding standards, design patterns, and best architectural practices throughout the codebase.?
+
+Configuration settings (for features, environments, integrations) must be handled via external files or variables, not hard-coded, allowing updates without direct code changes.?
+
+Dependency management must enable safe updates of external libraries and internal modules by using versioning, dependency injection, and modular architecture.?
+
+The system shall include robust error handling and logging-with meaningful messages, exception tracing, and logging of all system events to aid debugging and support rapid incident response.?
+
+Regular automated tests (unit, integration, regression) and code reviews must be mandatory to catch issues early, lower risk, and promote shared team knowledge.?
+
+Consistent naming conventions and formatting will ensure code is readable and easy to maintain or refactor.?
+
+Up-to-date external documentation (design docs, user manuals, API references) must be provided for maintainers and users.?
+
+Technical debt must be monitored and reduced routinely by incremental refactoring, prioritizing high-risk or high-change areas, and implementing improvements iteratively.?
+
+All maintenance activities (bug fixes, updates, refactoring) are to be planned and documented, ensuring a well-defined process for tracking, review, and future support.
+
+4.4.3 Portability
+The system shall operate on all major browsers (Chrome, Edge, Firefox, Safari), and latest two versions of Android (10+) and iOS (14+), without requiring special plugins or manual configuration.
+
+All essential modules (UI, backend, AI engines, integrations) must be containerized or otherwise modular, enabling simple migration between cloud providers or local infrastructure with minimal adjustment.
+
+Data import/export features will use industry-standard formats (e.g., JSON, CSV, MP4) for compatibility, allowing users and admins to move their profile/session information to or from other platforms if needed.
+
+All essential system documentation must clearly specify platform dependencies, required software, and setup instructions to make deployment seamless.
+
+4.4.4 Scalability
+The system shall be designed with scalability as a core principle, using modular architecture (such as microservices), cloud-native deployments, and distributed resources to support future growth and evolving demands.?
+
+Automated horizontal and vertical scaling must be supported. This includes the ability to dynamically allocate or deallocate compute, storage, and database resources in response to fluctuations in user load, session volume, and AI model complexity.?
+
+Load balancing shall distribute user and system requests across multiple servers/services, preventing bottlenecks and maintaining performance even with tens of thousands of concurrent users.?
+
+Scalable database technologies, such as sharding and replication, must be used to efficiently handle increasing data volumes related to sessions, feedback, and user profiles.?
+
+The system should continuously monitor key performance and scalability metrics, allowing for real-time adjustment, early detection of bottlenecks, and rapid troubleshooting.?
+
+Scalability requirements must be considered from the planning and design phases, with regular scalability testing under realistic scenarios and loads to ensure the software remains reliable, cost-effective, and performant as the platform expands.
+
+4.4.5 AI Security Best Practices
+The system shall implement organization-centric AI governance policies to establish strong security baselines, including data privacy, asset management, ethical guidelines, and compliance standards, following current frameworks like NIST AI RMF and GDPR.?
+
+All AI components, including open-source models, frameworks, and datasets, must go through a rigorous and documented security vetting process before use, ensuring data encryption, secure handling, and third-party risk evaluation.?
+
+Data privacy must be preserved at every AI process stage using differential privacy, data minimization, and anonymization techniques for all training and inference data.?
+
+Role-based access controls (RBAC) or policy-based access controls (PBAC) must be implemented to restrict AI model and sensitive data access to only those who need it, enforced throughout user, admin, and system interactions.?
+
+All API endpoints and inference interfaces must require strong authentication (such as OAuth tokens and rotating API keys), with enforced input validation, rate limiting, and automated real-time monitoring of all API requests to detect and block anomalous or malicious activity.?
+
+AI system activity-including model inference, training operations, and data flows-shall be logged in detail and continuously monitored for threats, using behavioral analytics and anomaly detection models that can trigger automated response workflows when needed.?
+
+Regular security testing, including adversarial robustness checks, penetration tests, API audits, and prompt filtering, must be integrated into both development and operational pipelines (DevSecOps), with documented remediation and rollback capabilities.?
+
+System architecture will apply zero-trust principles: authenticate and authorize every request, strictly minimize privileges, assume breach, and segment all AI-related environments (training, staging, production).?
+
+All AI security controls, audit records, and compliance documentation must be easily accessible to support external audits, regulatory reviews, and transparency reporting as required by emerging standards.?
+5. Other Requirements
+5.1 Legal, Licensing, & Compliance
+5.1.1 Data Privacy Laws (GDPR, COPPA, etc.)
+VirtuoMate must comply fully with major data privacy laws, including GDPR, COPPA, and relevant regional regulations for user data, especially for AI-driven platforms and handling minors' data where applicable.?
+
+Collect, process, and store personal data only with explicit, informed, and revocable user consent. Users must be able to access, correct, and delete their information at any time.?
+
+All personal information (including training data used by AI) should be encrypted both at rest and in transit, and stored within certified facilities (e.g. ISO 27001, SOC 1, SOC 2).?
+
+A Data Protection Impact Assessment (DPIA) must be performed before introducing new data features or AI capabilities.
+
+5.1.2 Copyright & Third-Party Content
+Any third-party content (images, media, text) used by the app must be properly licensed and credited; the system must prevent unauthorized uploads or use.
+
+All AI models, datasets, and training materials used or provided for user coaching must comply with copyright law and terms-of-service of their origin.
+5.1.3 Terms of Use and User Agreements
+Users must explicitly accept clear, accessible Terms of Use and Privacy Policy before using the platform, covering AI interactions, feedback, and data handling.
+
+Admins shall ensure user agreements are kept up-to-date with evolving laws and policies.
+
+5.2 Accessibility Standards
+5.2.1 Screen Reader Support
+All key parts of the app's web and mobile UI will be compatible with major screen readers (e.g., JAWS, NVDA, VoiceOver), using proper semantic HTML and ARIA labels.
+
+5.2.2 High Contrast & Font Size
+Users can switch to high-contrast mode and increase font sizes across the app with a simple toggle, ensuring readability for visually impaired users.
+
+All graphical feedback, charts, and video overlays must pass accessibility checks for sufficient color contrast.
+
+5.2.3 Keyboard Navigation
+Every interactive element and workflow shall be fully navigable and actionable via keyboard only, with visual focus indicators and skip links for speed.
+
+5.3 Internationalization & Localization
+5.3.1 Supported Languages
+The platform UI will launch in English, with planned support for additional languages (such as Urdu and Arabic) within 12 months.
+
+5.3.2 Regional Formats
+The app will display dates, times, and currencies in local formats based on user language/location settings.
+
+5.3.3 Localization Testing
+All user-facing content-including notifications, feedback, and error messages-must undergo localization/translation testing before launch to ensure clarity and context in every supported language.
+
+5.4 Ethical Use Considerations
+5.4.1 Bias Mitigation in AI
+VirtuoMate must conduct routine audits of its AI recommendations, feedback, and session analytics to identify and reduce risks of algorithmic bias, especially concerning gender, race, age, and language.?
+
+Training data must be diverse and regularly updated with continuous monitoring for discriminatory patterns.
+
+5.4.2 Safeguards Against Misuse
+Automated and manual moderation (see previous NFRs) will flag, review, and prevent abusive language, manipulation, or unethical coaching scenarios within all sessions.
+
+Sensitive features-including simulated interviews, video CV generation, and premium mentor advice-must include disclaimers and guidance to prevent their misuse for fraudulent, harmful, or misleading purposes.?
+
+5.4.3 Responsible AI Practices
+All AI model decisions-session feedback, video CV advice, analytics, moderation-must be logged, reviewed, and explainable to users and auditors for transparency.?
+
+A published Responsible AI Policy will govern VirtuoMate's operations and system design, including clear escalation pathways for user complaints or requests for review of automated decisions.
+
+6. Revised Project Plan
+6.1 Gantt Chart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+6.2 Mile-Stone Schedule
+MilestoneTarget Completion (Week)DescriptionProject Kickoff1Formal start, introduce team, assign roles.Requirements & Design Complete6All specifications and diagrams reviewed and finalized.AI/ML Prototype Ready12First AI features and integrations demonstrated.Backend & Database Complete18Core backend modules, database schemas implemented.Avatar & Video CV Module Ready22Avatar/video creation features are functional.Admin Dashboard Delivered26Admin panel and analytics tools working.UI/UX Design Locked28All mobile/web UI components finalized.System Integration Complete32All modules wired together for end-to-end testing.Feature Freeze34No new features; only bug fixes and optimizations.Full Functional & Usability Testing35Comprehensive QA and user acceptance testings.Final Deployment/Go-live36Public rollout, user onboarding, launch support.
+
+
+7. References
+People Managing People, "30 Best AI Recruiting Software of 2025 for High-Volume Sourcing," Oct. 2, 2025. [Online]. Available: https://peoplemanagingpeople.com/tools/best-ai-recruiting-software/?
+
+SelectSoftwareReviews, "10+ Best AI Recruiting Software for 2025: Expert Reviews + Pricing," Aug. 1, 2019. [Online]. Available: https://www.selectsoftwarereviews.com/buyer-guide/ai-recruiting?
+
+HR Business Solutions, "10 Best Recruiting Software of 2025," Nov. 13, 2025. [Online]. Available: https://hrbs.com.pk/10-best-recruitment-softwares/?
+
+The Talent Games, "Award-winning AI Recruitment Software for 2025: 8 Key Features," Jul. 7, 2025. [Online]. Available: https://thetalentgames.com/ai-recruitment-software-for-2025-8-key-features/?
+
+Klearskill, "Top 10 Best AI Recruiting Software Solutions for 2025," Oct. 23, 2025. [Online]. Available: https://www.klearskill.com/blog-post/best-ai-recruiting-software?
+
+Second Talent, "Top 6 AI Recruiting Tools in 2025 [Tried & Tested]," Aug. 22, 2025. [Online]. Available: https://www.secondtalent.com/resources/top-ai-recruiting-tools/?
+
+Juicebox, "Best AI Recruitment Tools in 2025 for Recruiters & HR," Aug. 17, 2025. [Online]. Available: https://juicebox.ai/blog/recruitment-automation-tools?
+
+BPO Wizard, "5 Best ATS Software for 2025 [Pricing + Expert Comparison]," Jul. 24, 2025. [Online]. Available: https://bpowizard.com/best-ats-software-2025/?
+
+HiveMind, "7 Best AI Recruiting Tools for Startups in 2025," 2025. [Online]. Available: https://gethivemind.ai/blog/best-ai-recruiting-tools-for-startups?
+
+Flexhire, "20+ Best AI Recruiting Software Tools in 2025," Oct. 9, 2025. [Online]. Available: https://www.flexhire.com/blog/yana/20-best-ai-recruiting-software-tools-in-2025
+Appendix A: Glossary
+TermDefinitionArtificial Intelligence (AI)Systems that simulate human learning, reasoning, and decision-making, used in recruitment for automation and data analysis.Applicant Tracking System (ATS)Software for managing recruitment stages including job posting, screening, and onboarding of candidates.Attribute SearchFinding candidates based on specific skills, abilities, and experiences, often inferred beyond information found in a resume.Bias MitigationStrategies and practices to reduce and prevent discrimination in AI and recruitment decisions, ensuring fairness.Candidate Experience (CX)The overall experience and interactions a candidate has with an organization's recruitment process.Candidate MatchingThe process of aligning candidate qualifications to job requirements, often powered by AI algorithms.Candidate Relationship Management (CRM)Tools and strategies for nurturing and managing communications with potential candidates over time.ChatbotAn AI-driven conversational agent that can engage candidates, answer questions, or conduct preliminary screenings.Conversational AIAI that replicates human-like conversation (text or voice), used for screening, scheduling, or candidate support.Data Privacy (GDPR, COPPA)Laws and technical measures safeguarding personal information, ensuring collection, storage, and processing of data with user consent.Deep LearningA subset of machine learning using layered neural networks to analyze complex data for tasks like resume parsing or intent recognition.Generative AI (GenAI)AI models that create new content (text, images, video) by learning from patterns in large datasets, used for writing job descriptions and candidate outreach.HyperautomationThe use of multiple automation tools (AI, ML, RPA) to optimize and expand recruitment and HR operations.Machine Learning (ML)Algorithms that learn patterns from data and improve over time, applied in recruitment for ranking candidates and job fit prediction.Natural Language Processing (NLP)AI technique for understanding, processing, and generating human language, used in chatbots and resume screening.Resume ParsingTechnology that extracts and organizes information from resumes into structured, searchable data using AI.Role-Based SimulationTraining or assessment modules replicating workplace scenarios for practice and skill evaluation.SourcingThe act of identifying and attracting potential candidates, often enhanced by AI for efficiency and reach.User Experience (UX)The ease, accessibility, and overall satisfaction felt by users when interacting with the VirtuoMate platform.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+	University of Central Punjab
+
+VIRTUOMATE
+
+F25BSCS198	SDP Phase I (RS)	Page 19
+

@@ -48,6 +48,11 @@ tmp-*
 *.log
 **/agent-tools/
 
+# Archive backups (source folders are tracked instead)
+*.rar
+*.7z
+*.zip
+
 # Optional huge folders (uncomment if you want a slimmer repo)
 # virtuomate-mvp/
 # poster/
