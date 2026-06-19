@@ -15,11 +15,11 @@ workflows:
         GOOGLE_WEB_CLIENT_ID: "671835013493-2985ntmhtttbia0sj90nkcj93cfmcsof.apps.googleusercontent.com"
     scripts:
       - name: Install dependencies
-        script: |
-          flutter pub get
-          find . -name "Podfile" -execdir pod install \;
+        script: flutter pub get
       - name: Flutter analyze
-        script: flutter analyze --no-fatal-infos --no-fatal-warnings
+        script: flutter analyze lib test integration_test --no-fatal-infos --no-fatal-warnings
+      - name: Install iOS pods
+        script: find . -name "Podfile" -execdir pod install \;
       - name: Build iOS (no codesign — for testing)
         script: |
           flutter build ios --release --no-codesign \
