@@ -48,7 +48,7 @@ class DefaultFirebaseOptions {
     storageBucket: 'virtuomate.firebasestorage.app',
     androidClientId: '671835013493-op5pv14ol9afsasu6u5kb6qq3mg5ege9.apps.googleusercontent.com',
     iosClientId: '671835013493-51l32nbs1bqah3ms96dbklskvu220k77.apps.googleusercontent.com',
-    iosBundleId: 'com.example.virtuomateFlutter',
+    iosBundleId: 'com.virtuomate.app',
   );
 
   static const FirebaseOptions macos = ios;

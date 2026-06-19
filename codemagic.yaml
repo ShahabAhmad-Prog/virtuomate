@@ -1,13 +1,21 @@
 workflows:
+  # Signed build → TestFlight. Requires Apple Developer ($99/yr) + Codemagic setup below.
   virtuomate-ios:
-    name: VirtuoMate iOS
+    name: VirtuoMate iOS (Signed → TestFlight)
     max_build_duration: 60
     instance_type: mac_mini_m2
     working_directory: virtuomate_flutter
+    # Codemagic → Teams → Integrations → Developer Portal → App Store Connect API key.
+    # Rename below to match the integration name you create in Codemagic UI.
+    integrations:
+      app_store_connect: app_store_connect
     environment:
       flutter: stable
       xcode: latest
       cocoapods: default
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.virtuomate.app
       vars:
         USE_FIREBASE: "true"
         USE_BACKEND_API: "true"
@@ -25,7 +33,49 @@ workflows:
           flutter clean
           flutter pub get
           cd ios && pod install --repo-update
-      - name: Build iOS (no codesign — for testing)
+      - name: Build signed IPA
+        script: |
+          flutter build ipa --release \
+            --dart-define=USE_FIREBASE=$USE_FIREBASE \
+            --dart-define=USE_BACKEND_API=$USE_BACKEND_API \
+            --dart-define=BACKEND_BASE_URL=$BACKEND_BASE_URL \
+            --dart-define=GOOGLE_WEB_CLIENT_ID=$GOOGLE_WEB_CLIENT_ID
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        beta_groups:
+          - Internal Testers
+
+  # Unsigned compile-only workflow (no Apple account needed).
+  virtuomate-ios-compile:
+    name: VirtuoMate iOS (Compile check only)
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    working_directory: virtuomate_flutter
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+      vars:
+        USE_FIREBASE: "true"
+        USE_BACKEND_API: "true"
+        BACKEND_BASE_URL: "https://us-central1-virtuomate.cloudfunctions.net/api"
+        GOOGLE_WEB_CLIENT_ID: "671835013493-2985ntmhtttbia0sj90nkcj93cfmcsof.apps.googleusercontent.com"
+    scripts:
+      - name: Install dependencies
+        script: |
+          flutter config --no-enable-swift-package-manager
+          flutter pub get
+      - name: Install iOS pods
+        script: |
+          flutter clean
+          flutter pub get
+          cd ios && pod install --repo-update
+      - name: Build iOS (no codesign)
         script: |
           flutter build ios --release --no-codesign \
             --dart-define=USE_FIREBASE=$USE_FIREBASE \
@@ -34,8 +84,6 @@ workflows:
             --dart-define=GOOGLE_WEB_CLIENT_ID=$GOOGLE_WEB_CLIENT_ID
     artifacts:
       - build/ios/iphoneos/*.app
-      - /tmp/xcodebuild_logs/*.log
-      - flutter_drive.log
 
   virtuomate-android:
     name: VirtuoMate Android
