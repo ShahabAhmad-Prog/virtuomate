@@ -25,8 +25,8 @@ class ApiAppRepository implements AppRepository {
 
   Future<void> bootstrap({String? displayName, String? phone}) async {
     await _api.postJson('/user/bootstrap', {
-      if (displayName != null) 'displayName': displayName,
-      if (phone != null) 'phone': phone,
+      'displayName': ?displayName,
+      'phone': ?phone,
     });
   }
 

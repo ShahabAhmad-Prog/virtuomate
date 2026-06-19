@@ -76,7 +76,7 @@ class ChatService {
     await col.add({
       'isUser': false,
       'text': text.trim(),
-      if (emotion != null) 'emotion': emotion,
+      'emotion': ?emotion,
       'createdAt': FieldValue.serverTimestamp(),
     });
   }

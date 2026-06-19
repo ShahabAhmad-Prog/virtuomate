@@ -55,12 +55,12 @@ class ProfileAvatarThumbnail extends StatelessWidget {
             height: size,
             fit: BoxFit.cover,
             gaplessPlayback: true,
-            errorBuilder: (_, __, ___) => _placeholder(),
+            errorBuilder: (context, error, stackTrace) => _placeholder(),
           );
         } else if (hasImage && !kIsWeb) {
           final file = File(ref);
           face = file.existsSync()
-              ? Image.file(file, width: size, height: size, fit: BoxFit.cover, errorBuilder: (_, __, ___) => _placeholder())
+              ? Image.file(file, width: size, height: size, fit: BoxFit.cover, errorBuilder: (context, error, stackTrace) => _placeholder())
               : _placeholder();
         } else {
           face = _placeholder();

@@ -35,6 +35,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   Future<void> _boot() async {
     await VirtuoMateLogo.precacheWelcome(context);
+    if (!mounted) return;
     final c = VirtuoMateScope.of(context);
     await c.loadLocaleFromDevice();
     await Future<void>.delayed(const Duration(milliseconds: 2400));

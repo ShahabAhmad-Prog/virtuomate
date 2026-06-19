@@ -75,8 +75,8 @@ class ApiCoachEngine implements CoachEngine {
         'userInput': userInput,
         'avatarStyle': avatarStyle,
         'voiceProfile': voiceProfile,
-        if (emotion != null) 'emotion': emotion,
-        if (stepIndex != null) 'stepIndex': stepIndex,
+        'emotion': ?emotion,
+        'stepIndex': ?stepIndex,
       });
       final assessmentJson = response['assessment'] as Map<String, dynamic>?;
       final provider = (response['provider'] as String?) ?? '';
@@ -133,7 +133,7 @@ class ApiCoachEngine implements CoachEngine {
     final response = await _api.postJson('/ai/analyze-text', {
       'text': text,
       'sessionType': sessionType,
-      if (context != null) 'context': context,
+      'context': ?context,
     });
     return CoachingAssessment.fromJson(response);
   }
@@ -147,7 +147,7 @@ class ApiCoachEngine implements CoachEngine {
     final response = await _api.postJson('/ai/analyze-speech', {
       'transcript': transcript,
       'sessionType': sessionType,
-      if (durationSec != null) 'durationSec': durationSec,
+      'durationSec': ?durationSec,
     });
     return CoachingAssessment.fromJson(response);
   }

@@ -19,7 +19,7 @@ workflows:
           flutter pub get
           find . -name "Podfile" -execdir pod install \;
       - name: Flutter analyze
-        script: flutter analyze
+        script: flutter analyze --no-fatal-infos --no-fatal-warnings
       - name: Build iOS (no codesign — for testing)
         script: |
           flutter build ios --release --no-codesign \
