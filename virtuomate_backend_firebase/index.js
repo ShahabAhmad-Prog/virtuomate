@@ -32,7 +32,12 @@ function getApp() {
 
 exports.api = functions
   .region(REGION)
-  .runWith({ timeoutSeconds: 300, memory: '1GB', invoker: 'public' })
+  .runWith({
+    timeoutSeconds: 300,
+    memory: '1GB',
+    invoker: 'public',
+    secrets: ['GEMINI_API_KEY'],
+  })
   .https.onRequest((req, res) => getApp()(req, res));
 
 if (require.main === module) {

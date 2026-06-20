@@ -27,4 +27,11 @@ Set-Location $Root
 node (Join-Path $Root "scripts\test-gemini-key.js")
 if ($LASTEXITCODE -ne 0) { throw "Gemini rejected this key. Enable Generative Language API in Cloud Library." }
 
-Write-Host "Key saved and verified. Run: .\scripts\fyp-demo-step2-deploy.ps1" -ForegroundColor Green
+Write-Host ""
+Write-Host "=== Upload key to Cloud Functions (Firebase Secret) ===" -ForegroundColor Cyan
+Write-Host "Paste the SAME key when prompted (input is hidden)." -ForegroundColor Yellow
+firebase functions:secrets:set GEMINI_API_KEY
+if ($LASTEXITCODE -ne 0) { throw "firebase functions:secrets:set failed." }
+
+Write-Host ""
+Write-Host "Key saved locally (.env) and in Firebase Secret. Run: .\scripts\fyp-demo-step2-deploy.ps1" -ForegroundColor Green
